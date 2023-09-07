@@ -1,0 +1,425 @@
+%%%%%%%%%%%%%%% LaTeX Compiler: XeLaTeX %%%%%%%%%%%%%%%
+
+% License for LaTeX Configuration File
+
+% This LaTeX configuration file is created by Lin, Xuanyu, HKUST, and is provided under the terms of the MIT License. You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of this configuration file, subject to the following conditions:
+
+% 1. The above copyright notice and this license notice shall be included in all copies or substantial portions of the configuration file.
+
+% 2. The configuration file is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the configuration file or the use or other dealings in the configuration file.
+
+% By using this configuration file, you agree to the terms and conditions of this license. If you do not agree to these terms and conditions, you must not use the configuration file.
+
+\documentclass[10pt]{article}
+% Text setting
+% \usepackage{newtxtext}
+\usepackage{setspace}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{comment}
+% Chinese characters setup
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+% Dealing with special characters
+\usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc} % Conflict with fontspec & xeCJK
+\usepackage{pifont}
+% Mathematical formula typesetting
+\usepackage{unicode-math}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\setmathfont{Latin Modern Math}
+% \usepackage{amssymb} % Contained in package unicode-math
+% Jump (Math) \llbracket & \rrbracket
+\usepackage{stmaryrd}
+% Chemical formulas and equations
+\usepackage[version=4]{mhchem}
+% Graphics
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage[export]{adjustbox}
+% Tables, enumeration
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+% Adjust the position
+\usepackage{float}
+% Frames, reference
+\usepackage{framed}
+\usepackage[strict]{changepage}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+% Page & paragraph settings
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\geometry{left=1.5cm, right=1.5cm, top=2cm, bottom=2cm}
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0em}
+% Algorithm & coding environment
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{listings}
+% New command
+\newcommand\course{COMP 3711}  
+\newcommand\coursetitle{Design and Analysis of Algorithms}
+\newcommand\semester{Fall 2023}
+\renewcommand{\labelenumi}{\alph{enumi}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\dd}{\mathrm{d}}
+\DeclareMathOperator{\Mod}{Mod}
+\renewcommand\lstlistingname{Algorithm}
+\renewcommand\lstlistlistingname{Algorithms}
+\def\lstlistingautorefname{Alg.}
+
+%%%%%%%%%%%%%%% Page Setup %%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+\headheight 35pt
+\lhead{\course\ \coursetitle\ \semester}
+\rhead{\includegraphics[width=2.5cm]{logo-hkust.png}}
+\lfoot{}
+\pagenumbering{arabic}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 1.2em
+
+%%%%%%%%%%%%%%% Boxframe Setup %%%%%%%%%%%%%%%
+
+\definecolor{blueshade}{rgb}{0.95,0.95,1} % Horizontal Line: DarkBlue
+\definecolor{greenshade}{rgb}{0.90,0.99,0.91} % Horizontal Line: Green
+\definecolor{redshade}{rgb}{1.00,0.90,0.90}% Horizontal Line: LightCoral
+\definecolor{brownshade}{rgb}{0.99,0.97,0.93} % Horizontal Line: BurlyWood
+
+\newenvironment{formal}[2]{%
+	\def\FrameCommand{%
+		\hspace{1pt}%
+		{\color{#1}\vrule width 2pt}%
+		{\color{#2}\vrule width 4pt}%
+		\colorbox{#2}%
+	}%
+	\MakeFramed{\advance\hsize-\width\FrameRestore}%
+	\noindent\hspace{-4.55pt}% Disable indenting first paragraph
+	\begin{adjustwidth}{}{7pt}%
+		\vspace{2pt}\vspace{2pt}%
+	}
+	{%
+		\vspace{2pt}\end{adjustwidth}\endMakeFramed%
+}
+
+%%%%%%%%%%%%%%% Problem Environment Setup %%%%%%%%%%%%%%%
+
+\mdfdefinestyle{problemstyle}{
+	linecolor=black,linewidth=1pt,
+	frametitlerule=true,
+	frametitlebackgroundcolor=gray!20,
+	roundcorner=10pt,
+	innertopmargin=\topskip,
+	frametitlealignment=\hspace{0em},
+}
+
+\mdfsetup{skipabove=\topskip,skipbelow=\topskip}
+\mdtheorem[style=problemstyle]{Problem}{Problem}
+\newenvironment{Solution}{\textbf{Solution.}}
+
+%%%%%%%%%%%%%%% Coding Environment S6etup %%%%%%%%%%%%%%%
+
+\lstset{
+	basicstyle=\tt,
+	% Line number
+	numbers=left,
+	rulesepcolor=\color{red!20!green!20!blue!20},
+	escapeinside=``,
+	xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+	% Background frame
+	framexleftmargin=1.5mm,
+	frame=shadowbox,
+	% Background color
+	backgroundcolor=\color[RGB]{252,236,227},
+	% Style
+	keywordstyle=\color{blue}\bfseries,
+	identifierstyle=\bf,
+	numberstyle=\color[RGB]{0,192,192},
+	commentstyle=\it\color[RGB]{0,153,51},
+	stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},
+	% Show space
+	showstringspaces=false
+}
+
+%%%%%%%%%%%%%%% Document Begins %%%%%%%%%%%%%%%
+
+\begin{document}
+	
+%%%%%%%%%%%%%%% Title Page %%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\begin{center}
+		\vspace*{3cm}
+		
+		\Huge
+		\hrulefill
+		\vspace{1cm}
+		
+		\huge
+		\textbf{COMP 3711 Course Notes\\}
+		\vspace{1cm}
+		\textbf{Design and Analysis of Algorithms}
+		\vspace{1cm}
+		
+		\hrulefill
+		
+		\vspace{1.5cm}
+		\Large
+
+		\textbf{LIN, Xuanyu}
+		
+		\vfill
+		
+		$\mathscr{ALGORITHMS}$
+		
+		\vspace{1cm}
+		
+		\course \ Design and Analysis of Algorithms
+		
+		\vspace{1cm}
+		
+		\includegraphics[width=0.4\textwidth]{logo-hkust.png}
+		\\
+		
+		\Large
+		
+		\today
+		
+	\end{center}
+\end{titlepage}
+
+%%%%%%%%%%%%%%% Article Begins %%%%%%%%%%%%%%%
+
+\begin{comment}
+
+\begin{abstract}
+	Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract Abstract
+\end{abstract}
+
+\tableofcontents
+
+\begin{center}
+	\section*{\LARGE Title}
+\end{center}
+
+\section{Section 1}
+
+This is a link to \href{https://www.google.com}{Google}.
+
+$$
+\vec{\nabla} \cdot \vec{E}=\frac{1}{\epsilon_{0}} \cdot \rho
+$$
+
+\begin{formal}{DarkBlue}{blueshade}
+	\textbf{Theorem 1.1} 这是一段中文。\hyperref[ref1]{[1]}
+	
+	$$
+	\vec{\nabla} \cdot \vec{E}=\frac{1}{\epsilon_{0}} \cdot \rho
+	$$
+	
+	\noindent This is an English sentence.
+\end{formal}
+
+
+\begin{center}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\multirow{2}{*}{A} & B & C \\
+		\cline{2-3}
+		& D & E \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{$a, b$}
+	\KwOut{$c$}
+	$c = a + b$\;
+	\Return{$c$}\;
+	\caption{Addition}
+\end{algorithm}
+
+\begin{Problem}[Title]
+	
+	\lstset{language=Python}
+	\begin{lstlisting}[tabsize=4]
+print("Hello World!")
+	\end{lstlisting}
+
+\end{Problem}
+
+\begin{Solution}
+	
+	Text
+	
+\end{Solution}
+
+\section{References}
+
+\label{ref1}
+
+[1] Google \href{https://www.google.com}{https://www.google.com}
+
+\end{comment}
+
+\section{Sorting Problem}
+
+\subsection{Selection Sort}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{An array $A[1 ... n]$ of elements}
+	\KwOut{Array $A[1 ... n]$ of elements in sorted order (asending)}
+	\For{$i \gets 1$ to $n-1$}{
+		\For{$j \gets i+1$ to $n$}{
+			\If{$A[i]>A[j]$}{
+				swap $A[i]$ and $A[j]$
+			}
+		}
+	}
+	\caption{Selection Sort}
+\end{algorithm}
+
+Running Time: $\frac{n(n-1)}{2}$
+
+Best-Case = Worst-Case: $T(n) = \Theta(\frac{n(n-1)}{2}) = \Theta(n^2)$
+
+\subsection{Insertion Sort}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{An array $A[1 ... n]$ of elements}
+	\KwOut{Array $A[1 ... n]$ of elements in sorted order (asending)}
+	\For{$i \gets 2$ to $n$}{
+		$j \gets i-1$
+		\While{$j \geq 1$ and $A[j] > A[j+1]$}{
+			swap $A[j]$ and $A[j+1]$
+		}
+		$j \gets j-1$
+	}
+	\caption{Insertion Sort}
+\end{algorithm}
+
+Running Time: Depends on the input array, ranges between $(n-1)$ and $\frac{n(n-1)}{2}$
+
+Best-Case: $T(n) = n-1 = \Theta(n)$ (Useless)
+
+Worst-Case: $T(n) = \Theta(\frac{n(n-1)}{2}) = \Theta(n^2)$ (Commonly-Used)
+
+Average-Case: $T(n) = \Theta(\sum_{i=2}^n \frac{i-1}{2}) = \Theta(\frac{n(n-1)}{4}) = \Theta(n^2)$ (Sometimes Used)
+
+\subsection{Wild-Guess Sort}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{An array $A[1 ... n]$ of elements}
+	\KwOut{Array $A[1 ... n]$ of elements in sorted order (asending)}
+	$\pi \gets [4,7,1,3,8,11,5,...]$\ \ Create random permutation
+	Check if $A[\pi[i]] \leq A[\pi[i+1]]$ for all $i = 1,2,...,n-1$
+	If yes, output A according to $\pi$ and terminate
+	else $Insertion-Sort(A)$
+	\caption{Wild-Guess Sort}
+\end{algorithm}
+
+Running Time: Depends on the random generation, could be faster than the insertion sort.
+
+\subsection{Worst-Case Analysis}
+
+The algorithm’s worst case running time is $O(f(n)) \implies $ On all inputs of (large) size $n$, the running time of the algorithm is $\leq c \cdot f(n)$.
+
+The algorithm’s worst case running time is $\Omega (f(n)) \implies $ There exists at least one input of (large) size $n$ for which the running time of the algorithm is  $\geq c \cdot f(n)$.
+
+Thus, Insertion sort runs in $\Theta (n^2)$ time.
+
+\begin{formal}{DarkBlue}{blueshade}
+	
+	\textbf{Notice}
+	
+	Selection sort, insertion sort, and wild-guess sort all have worst-case running time $\Theta (n^2)$. How to distinguish between them?
+	
+	$\bullet$ Closer examination of hidden constants
+	
+	$\bullet$ Careful analysis of typical expected inputs
+	
+	$\bullet$ Other factors such as cache efficiency, parallelization are important
+	
+	$\bullet$ Empirical comparison
+	
+\end{formal}
+
+\begin{formal}{DarkGreen}{greenshade}
+
+	\textbf{Stirling's Formula}
+	
+	Prove that $\log (n!) = \Theta (n \log n)$
+	
+	First $\log (n!) = O (n \log n)$ since:
+	
+	$$
+	\log (n!) = \sum_{i=1}^n \log i \leq n \times \log n = O (n \log n)
+	$$
+
+	Second $\log (n!) = \Omega (n \log n)$ since:
+	
+	$$
+	\log (n!) = \sum_{i=1}^n \log i \geq \sum_{i=n/2}^n \log i \geq n/2 \times \log n/2 = n/2 (\log n - \log 2) = \Omega (n \log n)
+	$$
+
+\end{formal}
+
+\section{Divide \& Conquer}
+
+Main idea of D \& C: Solve a problem of size $n$ by breaking it into one or more smaller problems of size less than $n$. Solve the smaller problems recursively and combine their solutions, to solve the large problem.
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Binary Search}
+	
+	\textbf{Input:} A sorted array $A[1,...,n]$, and an element $x$
+	
+	\textbf{Output:} Return the position of $x$, if it is in $A$; otherwise output nil
+	
+	\textbf{Idea of the binary search:} Set $q \gets$ middle of the array. If $x = A[q]$, return $q$. If $x < A[q]$, search $A[1,...,q-1]$, else search $A[q+1,...,n]$.
+	
+\end{formal}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{Array $A[1 ... n]$ of elements in sorted order}
+	\SetKwFunction{Func}{BinarySearch}
+	\Func{$A[], p, r, x$}($p, r$ being the left \& right iteration, $x$ being the element being searched){
+		\If{$p > r$}{
+			\Return{nil}
+		}
+		$q \gets [(p+r)/2]$
+		
+		\If{$x = A[q]$}{
+			\Return{$q$}
+		}
+		\If{$x < A[q]$}{
+			\Func{$A[], p, q-1, x$}
+		}
+		\Else{
+			\Func{$A[], q+1, r, x$}
+		}
+	}
+	\caption{Binary Search}
+\end{algorithm}
+
+\end{document}
