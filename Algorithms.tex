@@ -278,7 +278,27 @@ print("Hello World!")
 
 \end{comment}
 
-\section{Sorting Problem}
+\section{Asymptotic Notation}
+
+\begin{formal}{DarkBlue}{blueshade}
+	
+	\noindent \textbf{Upper Bounds} $T(n) = O(f(n))$
+	
+	if exist constants $c > 0$ and $n_0 \geq 0$ such that for all $n \geq n_0$, $T(n) \leq c \cdot f(n)$.
+	
+	\noindent \textbf{Lower Bounds} $T(n) = \Omega(f(n))$
+	
+	if exist constants $c > 0$ and $n_0 \geq 0$ such that for all $n \geq n_0$, $T(n) \geq c \cdot f(n)$.
+	
+	\noindent \textbf{Tight Bounds} $T(n) = \Theta(f(n))$
+	
+	if $T(n) = O(f(n))$ and $T(n) = \Omega(f(n))$.
+	
+	\noindent \textbf{Note:} Here "=" means "is", not equal.
+	
+\end{formal}
+
+\section{Introduction - The Sorting Problem}
 
 \subsection{Selection Sort}
 
@@ -380,12 +400,19 @@ Thus, Insertion sort runs in $\Theta (n^2)$ time.
 	$$
 	\log (n!) = \sum_{i=1}^n \log i \geq \sum_{i=n/2}^n \log i \geq n/2 \times \log n/2 = n/2 (\log n - \log 2) = \Omega (n \log n)
 	$$
+	
+	Thus, $\log (n!) = \Theta (n \log n)$
 
 \end{formal}
+
+\newpage
 
 \section{Divide \& Conquer}
 
 Main idea of D \& C: Solve a problem of size $n$ by breaking it into one or more smaller problems of size less than $n$. Solve the smaller problems recursively and combine their solutions, to solve the large problem.
+
+
+\subsection{Binary Search}
 
 \begin{formal}{Brown}{brownshade}
 	
@@ -421,5 +448,140 @@ Main idea of D \& C: Solve a problem of size $n$ by breaking it into one or more
 	}
 	\caption{Binary Search}
 \end{algorithm}
+
+Recurrence of the algorithm, supposing $T(n)$ being the number of the comparisons needed for $n$ elements:
+
+\noindent $T(n) = T(\frac{n}{2}) + 2$ if $n > 1$, with $T(1) = 2$.
+
+$\implies T(n) = 2\log_2 n + 2 \implies O(\log n)$ algorithm
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Binary Search in Rotated Array}
+	
+	Suppose you are given a sorted array $A$ of $n$ distinct numbers that 
+	has been rotated $k$ steps, for some unknown integer $k$ between 1 and $n-1$. That is, $A[1 ... k]$ is sorted in increasing order, and $A[k+1 ... n]$ is also sorted in increasing order, and $A[n] < A[1]$.
+	
+	Design an $O(\log n)$-time algorithm that for any given x, 
+	finds x in the rotated sorted array, or reports that it does not 
+	exist.
+	
+	\noindent \textbf{Algorithm:}
+	
+	First conduct a $O(\log n)$ algorithm to find the value of $k$, then search for the target value in either the first part or the second part.
+	
+	$Find-x(A, x)$
+	
+	$k \leftarrow Find-k(A, 1, n)$ (First find $k$)
+	
+	$if\ x \geq A[1]\ then\ return\ BinarySearch(A, 1, k, x)$
+	
+	$Else\ return\ BinarySearch(A, k+1, n, x)$
+	
+\end{formal}
+
+\newpage
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Finding the last 0}
+	
+	You are given an array $A[1 ... n]$ that contains a sequence of 0 
+	followed by a sequence of 1 (e.g., 0001111111). $A$ contains $k$ 0(s) ($k>0$ and $k<<n$) and at least one 1.
+	
+	Design an $O(\log k)$-time algorithm that finds the position $k$ of the last 0.
+
+	\noindent \textbf{Algorithm:}
+	
+	$i\leftarrow1$
+	
+	$while\ A[i]=0$
+	
+	\quad \quad $i\leftarrow2i$
+	
+	$find-k(A[i/2 ... i])$
+
+\end{formal}
+
+\subsection{Merge Sort}
+
+Principle of the Merge Sort:
+
+$\bullet$ Divide array into two halves.
+
+$\bullet$ Recursively sort each half.
+
+$\bullet$ Merge two halves to make sorted whole.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{MergeSort}{MergeSort}
+	\SetKwFunction{Merge}{Merge}
+	\MergeSort{$A, p, r$}($p, r$ being the left \& right side of the array to be sorted){
+		
+		\If{$p = r$}{
+			\Return
+		}
+		$q \gets [(p+r)/2]$
+		
+		\MergeSort{$A, p, q$}
+		
+		\MergeSort{$A, q+1, r$}
+		
+		\Merge{$A, p, q, r$}
+		
+		\underline{First Call:} \MergeSort{$A, 1, n$}
+	}
+	\caption{Merge Sort}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{Two Arrays $L\gets A[p ... q]$ and $R\gets A[q+1 ... r]$ of elements in sorted order}
+	\SetKwFunction{Merge}{Merge}
+	\Merge{$A, p, q, r$}{
+		
+		Append $\infty$ at the end of $L$ and $R$
+		
+		$i\gets 1,\ j\gets 1$
+		
+		\For{$k \gets p$ to $r$}{
+		
+			\If{$L[i] \leq R[j]$}{
+				
+				$A[k] \gets L[i]$
+				
+				$i \gets i + 1$
+
+			}
+		
+			\Else{
+			
+				$A[k] \gets R[j]$
+				
+				$j \gets j + 1$
+		
+			}
+			
+		}
+
+	}
+	\caption{Merge}
+\end{algorithm}
+
+Let $T(n)$ be the running time of the algorithm on an array of size $n$.
+
+\noindent \textbf{Merge Sort Recurrence:}
+$$
+T(n) \leq T(\lfloor n/2 \rfloor) + T(\lceil n/2 \rceil) + O(n), \quad n>1, \quad T(1) = O(1)
+$$
+\textbf{Simplification:}
+$$
+\implies T(n) = 2T(n/2) + n, \quad n>1, \quad T(1) = 1
+$$
+\textbf{Result:}
+$$
+T(n) = n\log_2 n + n = O(n\log n)
+$$
 
 \end{document}
