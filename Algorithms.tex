@@ -409,7 +409,7 @@ Thus, Insertion sort runs in $\Theta (n^2)$ time.
 
 \section{Divide \& Conquer}
 
-Main idea of D \& C: Solve a problem of size $n$ by breaking it into one or more smaller problems of size less than $n$. Solve the smaller problems recursively and combine their solutions, to solve the large problem.
+\textbf{Main idea of D \& C:} Solve a problem of size $n$ by breaking it into one or more smaller problems of size less than $n$. Solve the smaller problems recursively and combine their solutions, to solve the large problem.
 
 
 \subsection{Binary Search}
@@ -431,6 +431,7 @@ Main idea of D \& C: Solve a problem of size $n$ by breaking it into one or more
 	\KwIn{Array $A[1 ... n]$ of elements in sorted order}
 	\SetKwFunction{Func}{BinarySearch}
 	\Func{$A[], p, r, x$}($p, r$ being the left \& right iteration, $x$ being the element being searched){
+		
 		\If{$p > r$}{
 			\Return{nil}
 		}
@@ -505,7 +506,7 @@ $\implies T(n) = 2\log_2 n + 2 \implies O(\log n)$ algorithm
 
 \subsection{Merge Sort}
 
-Principle of the Merge Sort:
+\textbf{Principle of the Merge Sort:}
 
 $\bullet$ Divide array into two halves.
 
@@ -583,5 +584,259 @@ $$
 $$
 T(n) = n\log_2 n + n = O(n\log n)
 $$
+
+\newpage
+
+\subsection{Inversion Counting}
+
+\textbf{Definition of the Inversion Numbers:} Given array $A[1 ... n]$, two elements $A[i]$ and $A[j]$ are inverted if $i < j$ but $A[i] > A[j]$. The inversion number of $A$ is the number of inverted pairs.
+
+\begin{formal}{DarkBlue}{blueshade}
+	
+	\textbf{Theorem:}
+
+	The number of swaps used by Insertion Sort = Inversion Number (Proved by induction on the size of the array)
+	
+	\noindent \textbf{Algorithm to Compute Inversion Number:}
+	
+	Algorithm 1: Check all $\Theta(n^2)$ pairs.
+	
+	Algorithm 2: Run Insertion Sort and count the number of swaps – Also $\Theta(n^2)$ time.
+	
+	Algorithm 3: Divide and Conquer
+	
+\end{formal}
+
+\subsubsection{Counting Inversions: Divide-and-Conquer}
+
+\textbf{Principle of the Algorithm:}
+
+$\bullet$ Divide: divide array into two halves
+
+$\bullet$ Conquer: recursively count inversions in each half
+
+$\bullet$ Conbine: count inversions where $a_i$ and $a_j$ are in different halves, and return sum of three quantities
+
+Inversion counting during the combine step is very similar to the Merge Algorithm (Algorithm 6), by counting the sum of each inversion number of the right array (indicated by $I[j]$) comparing to the left array.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{Two Arrays $L\gets A[p ... q]$ and $R\gets A[q+1 ... r]$ of elements in sorted order}
+	\SetKwFunction{Count}{Count}
+	\Count{$A, p, q, r$}{
+		
+		$i\gets 1,\ j\gets 1,\ c\gets 0$
+		
+		\While{$(i \leq q-p+1) \&\& (j \leq r-q)$}{
+			
+			\If{$L[i] \leq R[j]$}{
+				
+				$i \gets i+1$
+				
+			}
+			
+			\Else{
+				
+				$I[j] = q-p-i+2$
+				
+				$c \gets c+I[j]$
+				
+				$j \gets j+1$
+				
+			}
+			
+		}
+		
+	}
+	\caption{Inversion Count during Combination}
+\end{algorithm}
+
+The time-complexity of the algorithm is $\Theta(n\log n)$, same as the Merge Sort.
+
+\subsubsection{Implementation of the Algorithm}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Sort}{Sort-and-Count}
+	\SetKwFunction{Merge}{Merge-and-Count}
+	\Sort{$A, p, r$}{
+		
+		\If{$p = r$}{
+			\Return{0}
+		}
+		$q \gets \lfloor(p+r)/2\rfloor$
+		
+		$c_1 \gets$ \Sort{$A, p, q$}
+		
+		$c_2 \gets$ \Sort{$A, q+1, r$}
+		
+		$c_3 \gets$ \Merge{$A, p, q, r$}
+		
+		\Return{$c_1 + c_2 + c_3$}
+		
+		\underline{First Call:} \Sort{$A, 1, n$}
+	}
+	\caption{Main Algorithm}
+\end{algorithm}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{Two Arrays $L\gets A[p ... q]$ and $R\gets A[q+1 ... r]$ of elements in sorted order}
+	\SetKwFunction{Merge}{Merge-and-Count}
+	\Merge{$A, p, q, r$}{
+		
+		Append $\infty$ at the end of $L$ and $R$
+		
+		$i\gets 1,\ j\gets 1, c\gets 0$
+		
+		\For{$k \gets p$ to $r$}{
+			
+			\If{$L[i] \leq R[j]$}{
+				
+				$A[k] \gets L[i]$
+				
+				$i \gets i + 1$
+				
+			}
+			
+			\Else{
+				
+				$A[k] \gets R[j]$
+				
+				$j \gets j + 1$
+				
+				$c \gets c+q-p-i+2$
+				
+			}
+			
+		}
+	
+		\Return{$c$}
+		
+	}
+	\caption{Merge-and-Count}
+\end{algorithm}
+
+\subsection{D\&C: Observations on Problem Size and Number of Problems}
+
+\textbf{Observations of D\&C in Logarithmic Patterns:}
+
+$\bullet$ Break up problem of size $n$ into $p$ parts of size $n/q$.
+
+$\bullet$ Solve parts recursively and combine solutions into overall solution.
+
+$\bullet$ At level $i$, we break $i$ times and we have $p^i$ problems of size $n/q^i$.
+
+$\bullet$ When we cannot break up any more, usually when the problem size 
+becomes 1. Usually $i \approx \log_q n$.
+
+\begin{formal}{DarkGreen}{greenshade}
+
+The number of problems at (bottom) level $\log_q n$ is $p^i = p^{\log_q n} = n^{\log_q p}$.
+
+\end{formal}
+
+\vspace{1em}
+
+\textbf{Observations of D\&C in Non-Logarithmic Patterns:}
+
+$\bullet$ Break up problem of size $n$ into $p(\leq 2)$ parts of size $n-q$. (e.g. $q=1$ for Hanoi Problem)
+
+$\bullet$ Assume that $q=1$
+
+$\bullet$ At level i, we break $i$ times and we have $p^i$ problems of size $n-i$.
+
+$\bullet$ If we stop when the problem size becomes 1, then $n-i=1 \implies i=n-1$.
+
+\begin{formal}{DarkGreen}{greenshade}
+
+The number of problems at (bottom) level $n-1$ is: $p^i = p^{n-1}$.
+
+\end{formal}
+
+\subsection{Maximum Contiguous Subarray}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: The Maximum Subarray Problem}
+	
+	\textbf{Input:} An array of numbers $A[1,...,n]$, both positive and negative
+	
+	\textbf{Output:} Find the maximum $V(i, j)$, where $V(i, j) = \sum_{k=i}^j A[k]$
+	
+\end{formal}
+
+\subsubsection*{Brute-Force Algorithm}
+
+\textbf{Idea:} Calculate the value of $V(i, j)$ for each pair $i\leq j$ and return the maximum value.
+
+Requires three nested for-loop, time complexity: $\Theta(n^3)$.
+
+\subsubsection*{A Data-Reuse Algorithm}
+
+\textbf{Idea:} $V(i, j) = V(i, j-1) + A[j]$
+
+Requires two nested for-loop, time complexity: $\Theta(n^2)$.
+
+\newpage
+
+\subsubsection*{A D\&C Algorithm}
+
+\textbf{Idea:} Cut the array into two halves, all subarrays can be classified into three cases: entirely in the first/second half, or crosses the cut.
+
+\textbf{Compare with the merge sort:} Whole algorithm will run in $\Theta(n\log n)$ time if the cross-cut can be solved in $O(n)$ time.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{MaxSubArray}{MaxSubArray}
+	\MaxSubArray{$A, p, r$}{
+		
+		\If{$p = r$}{
+			\Return{$A[p]$}
+		}
+		$q \gets \lfloor(p+r)/2\rfloor$
+		
+		$M_1 \gets$ \MaxSubArray{$A, p, q$}
+		
+		$M_2 \gets$ \MaxSubArray{$A, q+1, r$}
+		
+		$L_m, R_m \gets -\infty$
+		
+		$V \gets 0$
+		
+		\For{$i \gets q$ to $p$}{
+		
+			$V \gets V+A[i]$
+			
+			\If{$V>L_m$}{
+			
+				$L_m \gets V$
+			
+			}
+		
+		}
+	
+		$V \gets 0$
+		
+		\For{$i \gets q+1$ to $r$}{
+			
+			$V \gets V+A[i]$
+			
+			\If{$V>R_m$}{
+				
+				$R_m \gets V$
+				
+			}
+			
+		}
+		
+		\Return{max{$M_1, M_2, L_m+R_m$}}
+		
+		\underline{First Call:} \MaxSubArray{$A, 1, n$}
+	}
+	\caption{Maximum Subarray}
+\end{algorithm}
+
+\textbf{Recurrence:} $T(n) = 2T(n/2)+n \implies T(n) = \Theta(n\log n)$
 
 \end{document}

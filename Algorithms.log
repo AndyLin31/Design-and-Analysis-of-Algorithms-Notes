@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  13 SEP 2023 19:36
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  14 SEP 2023 21:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1467,17 +1467,26 @@ File: ./images//logo-hkust.png Graphic file (type bmp)
 [3]
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
- [4] (./Algorithms.aux)
+ [4]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [5]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [6]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [7] (./Algorithms.aux)
 Package rerunfilecheck Info: File `Algorithms.out' has not changed.
-(rerunfilecheck)             Checksum: 87E75AFFC1FB3C4DE9AD2137828BFA8A;1283.
+(rerunfilecheck)             Checksum: C4D66B4F67F0764F240755086D21C02B;2499.
  ) 
 Here is how much of TeX's memory you used:
- 35719 strings out of 476179
- 709154 string characters out of 5813072
- 1178629 words of memory out of 5000000
- 55874 multiletter control sequences out of 15000+600000
+ 35737 strings out of 476179
+ 709882 string characters out of 5813072
+ 1179342 words of memory out of 5000000
+ 55892 multiletter control sequences out of 15000+600000
  475538 words of font info for 84 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 109i,16n,118p,512b,601s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 109i,16n,118p,512b,599s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Algorithms.pdf (5 pages).
+Output written on Algorithms.pdf (8 pages).
