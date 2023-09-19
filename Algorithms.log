@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  14 SEP 2023 21:12
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  19 SEP 2023 16:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1446,17 +1446,24 @@ File: ./images//logo-hkust.png Graphic file (type bmp)
  [1
 
 ]
-Excluding 'comment' comment.
+Excluding 'comment' comment. (./Algorithms.toc
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 5.00053pt on input line 285.
+(Font)              scaled to size 5.00053pt on input line 3.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 285.
+(Font)              scaled to size 4.99947pt on input line 3.
+)
+\tf@toc=\write6
+\openout6 = `Algorithms.toc'.
+
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
  [1]
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
  [2]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [3]
 
 Package xeCJK Warning: Unknown CJK family `\CJKttdefault' is being ignored.
 (xeCJK)                
@@ -1464,10 +1471,7 @@ Package xeCJK Warning: Unknown CJK family `\CJKttdefault' is being ignored.
 
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
-[3]
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [4]
+[4]
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
  [5]
@@ -1476,17 +1480,57 @@ File: ./images//logo-hkust.png Graphic file (type bmp)
  [6]
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
- [7] (./Algorithms.aux)
+ [7]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [8]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [9]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [10]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [11]
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [12]
+Package mdframed Info: Not enough space on this page on input line 1194.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [13]
+Package mdframed Info: Not enough space on this page on input line 1234.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [14]
+Package mdframed Info: Not enough space on this page on input line 1242.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [15]
+Package mdframed Info: Not enough space on this page on input line 1250.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [16]
+Package mdframed Info: Not enough space on this page on input line 1258.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [17]
+Package mdframed Info: Not enough space on this page on input line 1266.
+File: ./images//logo-hkust.png Graphic file (type bmp)
+<./images//logo-hkust.png>
+ [18]
+(./Algorithms.aux)
 Package rerunfilecheck Info: File `Algorithms.out' has not changed.
-(rerunfilecheck)             Checksum: C4D66B4F67F0764F240755086D21C02B;2499.
+(rerunfilecheck)             Checksum: 4527BFA64211B32C85E51BE4FD5FFD09;4304.
  ) 
 Here is how much of TeX's memory you used:
- 35737 strings out of 476179
- 709882 string characters out of 5813072
- 1179342 words of memory out of 5000000
- 55892 multiletter control sequences out of 15000+600000
+ 35955 strings out of 476179
+ 716164 string characters out of 5813072
+ 1189550 words of memory out of 5000000
+ 56107 multiletter control sequences out of 15000+600000
  475538 words of font info for 84 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 109i,16n,118p,512b,599s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 109i,16n,118p,512b,1058s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Algorithms.pdf (8 pages).
+Output written on Algorithms.pdf (19 pages).
