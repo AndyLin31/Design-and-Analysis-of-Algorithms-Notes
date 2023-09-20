@@ -1126,6 +1126,7 @@ $$
 
 For recent research, see: \href{https://arxiv.org/abs/1401.7714}{Powers of Tensors and Fast Matrix Multiplication (Le Gall, 2014)}
 
+\subsection{Master Theorem}
 
 
 
@@ -1134,7 +1135,7 @@ For recent research, see: \href{https://arxiv.org/abs/1401.7714}{Powers of Tenso
 
 
 
-
+% \begin{comment}
 
 \newpage
 
@@ -1198,11 +1199,11 @@ For recent research, see: \href{https://arxiv.org/abs/1401.7714}{Powers of Tenso
 (a)
 $$
 \begin{aligned}
-	T(n) &= 4T(n/2) + n^2 = 4[4T(n/4) + (n/2)^2] + n^2 = 4\{4[4T(n/4) + (n/4)^2] + (n/2)^2\} + n^2\\
+	T(n) &= 4T(n/2) + n^2 = 4[4T(n/4) + (n/2)^2] + n^2 = 4\{4[4T(n/8) + (n/4)^2] + (n/2)^2\} + n^2\\
 	&= 4\{4\{4\{\cdots [4T(1) + 2^2] + 4^2\} + \cdots + (n/4)^2\} + (n/2)^2\} + n^2\\
-	&= 4^{\log_2 n + 1} + 4^{\log_2 n} \times 1^2 + 4^{\log_2 n - 1} \times 2^2 + \cdots + 4^{1} \times (n/2)^2 + n^2\\
-	&= n^2 + n^2 \times 1^2 + \frac{n^2}{4} \times 2^2 + \frac{n^2}{4^2} \times 4^2 + \cdots + 4 \times (n/2)^2 + n^2\\
-	&= n^2 + \sum_{i=1}^{\log_2 n + 1} \frac{n^2}{4^{i-1}} (2^{i-1})^2 = (\log_2 n + 2) n^2 = O(n^2\log n)
+	&= 4^{\log_2 n} + 4^{\log_2 n - 1} \times 2^2 + 4^{\log_2 n - 2} \times 4^2 + \cdots + 4^{1} \times (n/2)^2 + n^2\\
+	&= n^2 + \frac{n^2}{4} \times 2^2 + \frac{n^2}{4^2} \times 4^2 + \cdots + 4 \times (n/2)^2 + n^2\\
+	&= n^2 (\log_2 n + 1) = O(n^2\log n)
 \end{aligned}
 $$
 
@@ -1210,14 +1211,17 @@ $$
 $$
 \begin{aligned}
 	T(n) &= 16T(n/4) + n = 16[16T(n/4^2) + n/4] + n = 16\{16[16T(n/4^3) + n/4^2] + n/4\} + n\\
-	&=  16\{16\{\cdots [T(1) + ] + n/4^2\} + n/4\} + n
+	&= 16\{16\{16\{\cdots [16T(1) + 4] + 4^2\} + \cdots + n/4^2\} + n/4\} + n\\
+	&= 16^{\log_4 n} + 16^{\log_4 n - 1} \times 4 + 16^{\log_4 n - 2} \times 4^2 + \cdots + 16^{1} \times n/4 + n\\
+	&= n^2 + \frac{n^2}{4} + \frac{n^2}{4^2} + \cdots + 4n + n\\
+	&= \frac{n-4n^2}{1-4} = \frac{4}{3} n^2 -\frac{1}{3} n = O(n^2)
 \end{aligned}
 $$
 
 (c)
 $$
 \begin{aligned}
-	T(n) &= T(\sqrt{n}) + 1
+	T(n) &= T(\sqrt{n}) + 1 = T(n^{1/2^2}) + 2 = T(n^{1/2^3}) + 3 = \cdots = T(2) + \log_2 n - 1 = O(\log_2 n)
 \end{aligned}
 $$
 
@@ -1235,7 +1239,60 @@ $$
 
 \textbf{Solution.}
 
+(a)
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{AllBinaryArrays}{AllBinaryArrays}
+	\AllBinaryArrays{$n$}{
+		
+	}
+
+	\underline{First Call:} \AllBinaryArrays{$n$}
+
+	\caption{All $n\times n$ Binary Arrays}
+\end{algorithm}
+
+(b) \textbf{Recurrence:} $T(n) = $
+
 \newpage
+
+\begin{Problem}
+	
+	Let $A[1..n]$ be an array of $n$ elements. One can compare in $O(1)$ time two elements of $A$ to see if they are equal or not; however,
+	the order relations $<$ and $>$ do not make sense. That is, one can check whether $A[i] = A[j]$ in $O(1)$ time, but the relations $A[i] < A[j]$ and $A[i] > A[j]$ are undefined and cannot be determined.
+	
+	\noindent In the tutorial you developed an $O(n\log n)$-time divide-and-conquer algorithm for finding a majority element of $A$ if one exists. In this assignment you need to generalize this problem.
+	
+	\noindent Let $k\in [1..n]$ be a fixed integer. An element of $A[1..n]$ is a k-major element if its number of occurrences in A is greater than $n/k$. For example, if $n = 30$, then a 10-major element should occur greater than 3 times (i.e., at least 4 times). Note that it is possible that no k-major exists for a particular k; it is also possible that there are multiple k-major elements for a particular k.
+	
+	\noindent This problem concerns with designing a divide-and-conquer algorithm for finding \textbf{all} 10-major elements in $A[1..n]$ in $O(n\log n)$ time; if there is no 10-major element, report so. Answer the following questions.
+	
+	(a) What is the maximum number of 10-major elements in
+	$A[1..n]$? Explain.
+	
+	(b) Design a divide-and-conquer algorithm that finds all 10-major elements in $A[1..n]$ in $O(n\log n)$ time; if there is no 10-major element, your algorithm should report so. Recall that one can check whether $A[i] = A[j]$ in $O(1)$ time, but the relations $A[i] < A[j]$ and $A[i] > A[j]$ are undefined and cannot be computed.
+	
+	\noindent \textbf{Write your algorithm in documented pseudocode. Also, explain in text what your pseudocode does. Explain the correctness of your algorithm.}
+	
+	\noindent Since your algorithm uses the divide-and-conquer principle, it should
+	be recursive in nature. That is, it should work on $A[1..n]$ in the
+	first call to return all 10-major elements of $A[1..n]$, and in subsequent recursive calls, it may recurse on many subarrays $A[p..q]$ for some $p, q\in [1..n]$ to return all 10-major elements of $A[p..q]$
+	
+	\noindent Given a particular subarray $A[p..q]$, a 10-major element of $A[p..q]$ is not necessarily a 10-major element of $A[1..n]$. Conversely, a 10-major element of $A[1..n]$ is not necessarily a 10-major element of $A[p..q]$.
+	
+	(c) Derive a recurrence relation that describes the running time $T(n)$ of your algorithm. Explain your reasoning. State the boundary condition(s).
+	
+	(d) Solve your recurrence \textbf{from scratch} to show that $T(n) = O(n\log n)$.
+	
+\end{Problem}
+
+\textbf{Solution.}
+
+\newpage
+
+\section*{Homework 2}
+
+\textbf{Name: LIN, Xuanyu, SID: 20838295, Email Address: xlinbf@connect.ust.hk}
 
 \begin{Problem}
 	
@@ -1259,12 +1316,6 @@ $$
 
 \textbf{Solution.}
 
-\newpage
-
-\begin{Problem}
-	
-\end{Problem}
-
-\textbf{Solution.}
+% \end{comment}
 
 \end{document}
