@@ -21,3 +21,7 @@
 \contentsline {subsubsection}{\numberline {3.7.1}A D\&C Solution to Matrix Multiplication}{10}{subsubsection.3.7.1}%
 \contentsline {subsubsection}{\numberline {3.7.2}Strassen's Matrix Multiplication Algorithm}{11}{subsubsection.3.7.2}%
 \contentsline {subsection}{\numberline {3.8}Master Theorem}{11}{subsection.3.8}%
+\contentsline {subsubsection}{\numberline {3.8.1}Master Theorem for Equalities}{11}{subsubsection.3.8.1}%
+\contentsline {subsubsection}{\numberline {3.8.2}Master Theorem for Inequalities}{11}{subsubsection.3.8.2}%
+\contentsline {section}{\numberline {4}Basic Randomized Algorithms}{12}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Probability}{12}{subsection.4.1}%

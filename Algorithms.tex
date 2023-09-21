@@ -1126,7 +1126,68 @@ $$
 
 For recent research, see: \href{https://arxiv.org/abs/1401.7714}{Powers of Tensors and Fast Matrix Multiplication (Le Gall, 2014)}
 
+Conjecture: Close to $\Theta(n^2)$
+
 \subsection{Master Theorem}
+
+For recurrences of form
+$$
+T(n) = a T(n/b) + f(n) \text{ or } T(n) \leq a T(n/b) + f(n) \text{, Let } c \equiv \log_b a
+$$
+
+where
+
+$\bullet$ $a \leq 1$ and $b > 1$ both being constants
+
+$\bullet$ $f(n)$ is a (asymptotically) positive polynomial function
+
+$\bullet$ $n/b$ could be either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$
+
+\subsubsection{Master Theorem for Equalities}
+
+\begin{enumerate}[label=(\arabic*)]
+	\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = \Theta(n^c)$
+	
+	\item Work Remains: $f(n) = \Theta(n^c \log^k n)$ for $k > -1 \implies T(n) = \Theta(n^c \log^{k+1} n)$
+	
+	Note: For the case $k = -1$, $T(n) = \Theta(n^c \log \log n)$;\quad
+	For the case $k < -1$, $T(n) = \Theta(n^c)$
+	
+	\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = \Theta(f(n))$
+	
+	Note: Rigorously, the third case requires $af(n/b) \leq kf(n)$ for some $k<1$ and sufficiently large $n$
+	
+	\item For a special case $T(n) = \sum_i T(\alpha_i n) + n$ where $\alpha_i > 0$ with $\sum_i \alpha_i < 1$, we have $T(n) = \Theta(n)$
+\end{enumerate}
+
+\subsubsection{Master Theorem for Inequalities}
+
+\begin{enumerate}[label=(\arabic*)]
+	\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = O(n^c)$
+	
+	\item Work Remains: $f(n) = O(n^c) \implies T(n) = O(n^c \log n)$
+	
+	\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = O(f(n))$
+\end{enumerate}
+
+\newpage
+
+\section{Basic Randomized Algorithms}
+
+\subsection{Probability}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1244,6 +1305,18 @@ $$
 	\SetAlgoLined
 	\SetKwFunction{AllBinaryArrays}{AllBinaryArrays}
 	\AllBinaryArrays{$n$}{
+		
+		ListofArrays \gets Null
+		
+		\If{n = 1}{
+		
+			\Return{value}
+		
+		}
+		
+		\AllBinaryArrays{$n-1$}
+		
+		
 		
 	}
 
