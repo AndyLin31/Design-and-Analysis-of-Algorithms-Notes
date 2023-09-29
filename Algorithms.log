@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  21 SEP 2023 18:11
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.14)  30 SEP 2023 00:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1496,43 +1496,21 @@ File: ./images//logo-hkust.png Graphic file (type bmp)
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
  [12]
+File: ./images//img4-1.png Graphic file (type bmp)
+<./images//img4-1.png>
 File: ./images//logo-hkust.png Graphic file (type bmp)
 <./images//logo-hkust.png>
- [13]
-Package mdframed Info: Not enough space on this page on input line 1256.
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [14]
-Package mdframed Info: Not enough space on this page on input line 1299.
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [15]
-Package mdframed Info: Not enough space on this page on input line 1360.
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [16]
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [17]
-Package mdframed Info: Not enough space on this page on input line 1380.
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [18]
-Package mdframed Info: Not enough space on this page on input line 1388.
-File: ./images//logo-hkust.png Graphic file (type bmp)
-<./images//logo-hkust.png>
- [19]
-(./Algorithms.aux)
+ [13] (./Algorithms.aux)
 Package rerunfilecheck Info: File `Algorithms.out' has not changed.
-(rerunfilecheck)             Checksum: 12A8C9A4B6026217C476E193B057F45F;5187.
+(rerunfilecheck)             Checksum: 4F3612BC760449A3DC8962A31B34321E;6250.
  ) 
 Here is how much of TeX's memory you used:
- 35962 strings out of 476179
- 716296 string characters out of 5813072
- 1190488 words of memory out of 5000000
- 56114 multiletter control sequences out of 15000+600000
- 475538 words of font info for 84 fonts, out of 8000000 for 9000
+ 35788 strings out of 476179
+ 710726 string characters out of 5813072
+ 1191268 words of memory out of 5000000
+ 55933 multiletter control sequences out of 15000+600000
+ 475554 words of font info for 86 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 109i,16n,118p,512b,1058s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 109i,16n,118p,512b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Algorithms.pdf (20 pages).
+Output written on Algorithms.pdf (14 pages).

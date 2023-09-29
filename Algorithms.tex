@@ -1137,7 +1137,7 @@ $$
 
 where
 
-$\bullet$ $a \leq 1$ and $b > 1$ both being constants
+$\bullet$ $a \geq 1$ and $b > 1$ both being constants
 
 $\bullet$ $f(n)$ is a (asymptotically) positive polynomial function
 
@@ -1174,31 +1174,164 @@ $\bullet$ $n/b$ could be either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$
 
 \section{Basic Randomized Algorithms}
 
-\subsection{Probability}
+\subsection{Probability \& Statistics}
+
+$$
+E[X] = \sum i \cdot Pr[X = i]
+$$
+
+$$
+E[X+Y] = E[X] + E[Y]
+$$
+
+For independent random variables $X$ \& $Y$, 
+
+$$
+E[XY] = E[X] \cdot E[Y]
+$$
+
+\subsection{Generate a Random Permutation}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{RandomPermute}{RandomPermute}
+	\RandomPermute{$A$}{
+		
+		$n\gets A.length$
+		
+		\For{$i\gets 1 \text{ to } n$}{
+		
+			swap $A[i]$ with $A[Random(1,i)]$
+			
+		}
+		
+	}
+	\caption{Random Permutation}
+\end{algorithm}
+
+\subsection{Quick Sort}
+
+\textbf{Idea:} Quicksort chooses item as pivot. It partitions array so that all items less than or equal to pivot are on the left and all items greater than pivot on the right. It then recursively Quicksorts left and right sides.
 
 
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Quicksort}{Quicksort}
+	\SetKwFunction{Partition}{Partition}
+	\Quicksort{$A, p, r$} // Array from $A[p]$ to $A[r]$ {
+		
+		\If{$p \geq r$}{
+			\Return
+		}
+	
+		$q = $\Partition($A, p, r$) // Set a new pivot position
+		
+		\Quicksort($A, p, q-1$)
+		
+		\Quicksort($A, q+1, r$)
+		
+		\underline{First Call:} \MaxSubArray{$A, 1, n$}
+		
+	}
+		
+	\vspace{1em}
+	
+	\Partition{$A, p, r$}{
+	
+		$x\gets A[r]$ // Set the last item as pivot, or randomly swap away the last item before choosing the pivot
+		
+		$i\gets p-1$
+		
+		\For{$j\gets p$ to $r-1$}{
+		
+			\If{$A[j]\leq x$}{
+			
+				$i\gets i+1$
+				
+				swap $A[i]$ and $A[j]$ // Put all items $\leq A[r]$ on the left
+			
+			}
+		
+		}
 
+		swap $A[i+1]$ and $A[r]$
 
+		\Return{$i+1$}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% \begin{comment}
+	}
+	
+	\caption{Quick Sort}
+\end{algorithm}
 
 \newpage
+
+\subsubsection{Running Time}
+
+\textbf{Best Case:} Always select the median element as the pivot - $\Theta(n\log n)$ time.
+
+\textbf{Worst Case:} Always select the smallest (or the largest) element - $\Theta(n^2)$ time.
+
+To make running time independent of input, we can randomly choose an element as the pivot by swapping it with last item in array before running the partition.
+
+\subsubsection{Binary Tree Representation}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img4-1}
+\end{figure}
+
+\subsubsection{Expected Running Time for Random-Based Quick Sort} 
+
+$\bullet$ Two elements $z_i$ and $z_j$ are compared at most once, iff $z_i$ or $z_j$ is the first to be chosen among $z_i, \cdots, z_j$
+
+$\bullet$ The probability above (any indicated two elements $z_i$ and $z_j$ are compared) is $\frac{2}{j-1+1}$
+
+$$
+\implies E_{\text{Num of comparisons made}} = \sum_{i<j} \frac{2}{j-1+1} = O(n\log n)
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\end{document}
 
 \section*{Homework 1}
 
@@ -1282,7 +1415,7 @@ $$
 (c)
 $$
 \begin{aligned}
-	T(n) &= T(\sqrt{n}) + 1 = T(n^{1/2^2}) + 2 = T(n^{1/2^3}) + 3 = \cdots = T(2) + \log_2 n - 1 = O(\log_2 n)
+	T(n) &= T(\sqrt{n}) + 1 = T(n^{1/2^2}) + 2 = T(n^{1/2^3}) + 3 = \cdots = T(2) + \log_2 (\log_2 n) = O(\log_2 (\log_2 n))
 \end{aligned}
 $$
 
@@ -1300,23 +1433,67 @@ $$
 
 \textbf{Solution.}
 
-(a)
+(a) Main Idea: Recursively solve the problem by reducing the $k\times k$ array to $(k-1)\times (k-1)$ array. Then generate all the binary array of the remaining $1\times (k-1)$, $(k-1)\times 1$ and $1\times 1$ array. For each kind of array for the $(k-1)\times (k-1)$ array, we insert the remaining $(2k-1)$ elements into it, forming the $(k\times k)$ array.
+
 \begin{algorithm}
 	\SetAlgoLined
 	\SetKwFunction{AllBinaryArrays}{AllBinaryArrays}
+	\SetKwFunction{GenerateRemaining}{GenerateRemaining}
 	\AllBinaryArrays{$n$}{
 		
-		ListofArrays \gets Null
+		EmptyArray $\gets$ array$[n][n]$
+		
+		ArrayList<Type=array$[n][n]$> $\gets [\ ]$
 		
 		\If{n = 1}{
 		
-			\Return{value}
+			ArrayList.append(array$[n][n] = 0$, array$[n][n] = 1$) // Set the last element to 0 \& 1, others remaining 0
+			
+			\Return{ArrayList}
 		
 		}
 		
-		\AllBinaryArrays{$n-1$}
+		ArrayList\_1, ArrayList\_2, ArrayList\_3 $\gets$ \GenerateRemaining{$n$}
 		
+		PreviousArrayList$[\ ][2:n][2:n] \gets$ \AllBinaryArrays{$n-1$}
 		
+		// Insert the remaining $(2n-1)$ elements into the $n\times n$ array, forming all kinds of $(n\times n)$ array
+		
+		\ForEach{Combination of ArrayList\_1, ArrayList\_2, ArrayList\_3}{
+		
+			ArrayList.append(PreviousArrayList$[\ ][2:n][2:n]$.set(PreviousArrayList$[\ ][1][2:n]\gets$ ArrayList\_1, PreviousArrayList$[\ ][2:n][1]\gets$ ArrayList\_2, PreviousArrayList$[\ ][1][1]\gets$ ArrayList\_3))
+
+		}
+		
+		\Return{ArrayList}
+		
+	}
+
+	\vspace*{1em}
+	
+	/* Recursively generate all the kinds of $1\times (n-1)$, $(n-1)\times 1$ and $1\times 1$ array respectively */
+
+	\GenerateRemaining{$n$}{
+		
+		ArrayList\_1<Type=array$[1][n-1]$> $\gets [\ ]$\\
+		ArrayList\_2<Type=array$[n-1][1]$> $\gets [\ ]$\\
+		ArrayList\_3<Type=array$[1][1]$> $\gets [\ ]$
+		
+		\If{$n=2$}{
+		
+			\Return{$[[0], [1]], [[0], [1]], [[0], [1]]$} // To be assigned to $1\times (n-1)$, $(n-1)\times 1$ and $1\times 1$ array
+
+		}
+		
+		ArrayList\_1$[\ ][1][2:n-1]$, ArrayList\_2$[\ ][2:n-1][1]$, ArrayList\_3$[\ ][1][1]$ $\gets$ \GenerateRemaining{$n-1$} // Assign all possible cases of the previous arrays into all the array in the corresponing list
+		
+		// Set the new element inserted to be 0 and 1
+		
+		ArrayList\_1 = ArrayList\_1$[\ ][1][2:n-1]$.set$[\ ][1][1]\gets 0$ + ArrayList\_1$[\ ][1][2:n-1]$.set$[\ ][1][1]\gets 1$
+		
+		ArrayList\_2 = ArrayList\_2$[\ ][2:n-1][1]$.set$[\ ][1][1]\gets 0$ + ArrayList\_1$[\ ][2:n-1][1]$.set$[\ ][1][1]\gets 1$
+		
+		\Return{ArrayList\_1, ArrayList\_2, ArrayList\_3}
 		
 	}
 
@@ -1325,7 +1502,17 @@ $$
 	\caption{All $n\times n$ Binary Arrays}
 \end{algorithm}
 
-(b) \textbf{Recurrence:} $T(n) = $
+(b) \textbf{Recurrence:} Suppose $T(n) = T(n-1) + O(f(n))$
+
+$f(n)$ contains generating the remaining $1\times (n-1)$, $(n-1)\times 1$ and $1\times 1$ arrays as well as inserting such arrays into the original $n\times n$ array. The first part requires $O(n)$ time as a simple recursion while the second part requires $O(n\times 2^n)$ time, considering the insertion time.
+
+Thus,
+
+$$
+T(n) = T(n-1) + O(n\times 2^n) = \sum_{k=1}^n k\times 2^k = O(n2^n)
+$$
+
+
 
 \newpage
 
@@ -1359,7 +1546,66 @@ $$
 	
 \end{Problem}
 
+\newpage
+
 \textbf{Solution.}
+
+(a) The maximum number of 10-major elements is 9. If there were 10 10-major elements in an array of $n$ numbers, each 10-major elements should appear at least $\lfloor n/10 \rfloor + 1$ times, resulting in a total of at least $10 \lfloor n/10 \rfloor + 10 > 10(n/10-1) + 10 = n$ numbers to be presented. For 9 10-major elements, supposing there are 100 numbers in total, each such elements appear 11 times would satisfy the requirement.
+
+(b) Since the 10-major elements require the elements to appear at least $\lfloor n/10 \rfloor + 1$ times, we can infer that, if we cut the array into 10 subarrays, such elements must also be a 10-major elements in at least one of the subarray. Reporting such elements in the subarray to the previous recurrsion and checking if they are still 10-major elements in the previous recurrsion can help us get all the 10-major elements.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{GetMajorElements}{GetMajorElements}
+	\GetMajorElements{$A[n]$}{
+		
+		\If{len($A$) = 0 or 1}{\Return{$A$}} // Return $A$ itself as it stores nothing or the only 10-major element
+		
+		PossibleMajorElements $\gets [\ ]$
+		
+		TrueMajorElements $\gets [\ ]$
+		
+		\For{$i \gets$ 0 to 9}{
+			
+			start $\gets \lceil ni/10 \rceil$
+			
+			end $\gets \lceil n(i+1)/10 \rceil - 1$
+		
+			PossibleMajorElements.append(\GetMajorElements{$A[start:end]$})
+
+			// Check whether the elements in the PossibleMajorElements array are still 10-major elements in $A$
+			
+			\ForEach{elements in PossibleMajorElements}{
+			
+				Count its appearances in $A$, append it into TrueMajorElements if its appearances $\geq \lfloor n/10 \rfloor + 1$
+		
+			}
+
+		}
+		
+		\Return{TrueMajorElements}
+		
+	}
+	
+	\underline{First Call:} \GetMajorElements{$A[n]$}
+	
+	\caption{Get All 10-Major Elements}
+\end{algorithm}
+
+Correctness: As any 10-major element must be a 10-major element in at least one of the subarray, we must get all the possible answers.
+
+(c) \textbf{Recurrence:} Suppose $T(n) = 10T(n/10) + O(f(n))$ with $T(1) = 1$
+
+$f(n)$ contains counting the appearance number of each element in PossibleMajorElements within the array $A$. We've derived that there are at most 9 10-major elements in any subarray, indicating that there are no more than $9\times 10 = 90$ candidates stored in PossibleMajorElements. Comparing such 90 elements to the original array $A$ costs $O(n)$ time complexity. Thus, $f(n) = n$
+
+$$
+T(n) = 10T(n/10) + O(n) \text{ with } T(1) = 1
+$$
+
+(d)
+$$
+T(n) = 10T(n/10) + O(n) = 100T(n/100) + 11n = 1000T(n/1000) + 111n = \cdots = 10^{\log_{10}n} T(1) + 100 n\log_{10} n = O(n\log n)
+$$
 
 \newpage
 
@@ -1388,7 +1634,5 @@ $$
 \end{Problem}
 
 \textbf{Solution.}
-
-% \end{comment}
 
 \end{document}

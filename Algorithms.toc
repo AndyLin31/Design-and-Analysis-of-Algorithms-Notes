@@ -24,4 +24,9 @@
 \contentsline {subsubsection}{\numberline {3.8.1}Master Theorem for Equalities}{11}{subsubsection.3.8.1}%
 \contentsline {subsubsection}{\numberline {3.8.2}Master Theorem for Inequalities}{11}{subsubsection.3.8.2}%
 \contentsline {section}{\numberline {4}Basic Randomized Algorithms}{12}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Probability}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.1}Probability \& Statistics}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Generate a Random Permutation}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Quick Sort}{12}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Running Time}{13}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Binary Tree Representation}{13}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Expected Running Time for Random-Based Quick Sort}{13}{subsubsection.4.3.3}%
