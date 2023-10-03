@@ -67,6 +67,9 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[framemethod=TikZ]{mdframed}
 \usepackage{listings}
+\usepackage{wrapfig}
+\usepackage{booktabs}
+\usepackage{makecell}
 % New command
 \newcommand\course{COMP 3711}  
 \newcommand\coursetitle{Design and Analysis of Algorithms}
@@ -768,19 +771,19 @@ The number of problems at (bottom) level $n-1$ is: $p^i = p^{n-1}$.
 	
 	\textbf{Output:} Find the maximum $V(i, j)$, where $V(i, j) = \sum_{k=i}^j A[k]$
 	
-\end{formal}
-
-\subsubsection*{Brute-Force Algorithm}
+\noindent \textbf{Brute-Force Algorithm}
 
 \textbf{Idea:} Calculate the value of $V(i, j)$ for each pair $i\leq j$ and return the maximum value.
 
 Requires three nested for-loop, time complexity: $\Theta(n^3)$.
 
-\subsubsection*{A Data-Reuse Algorithm}
+\noindent \textbf{A Data-Reuse Algorithm}
 
 \textbf{Idea:} $V(i, j) = V(i, j-1) + A[j]$
 
 Requires two nested for-loop, time complexity: $\Theta(n^2)$.
+
+\end{formal}
 
 \newpage
 
@@ -879,6 +882,8 @@ The maximum of $V[i]$, namely $V_{max}$ is the maximum continuous subarray found
 	\caption{Kadane's Algorithm}
 \end{algorithm}
 
+\textbf{Time Complexity:} $\Theta(n)$
+
 \begin{formal}{Brown}{brownshade}
 	
 	\textbf{Example: Maximizing Stock Profits}
@@ -887,9 +892,9 @@ The maximum of $V[i]$, namely $V_{max}$ is the maximum continuous subarray found
 	
 	Design an divide-and-conquer algorithm that finds a strategy to make as much money as possible, i.e., it finds a pair $i, j$ with $1\leq i\leq j\leq n$ such that $p[j]-p[i]$ is maximized over all possible such pairs. Note that you are only allowed to buy the stock once and then sell it later.
 
-\end{formal}
+\vspace*{1em}
 
-\textbf{Idea 1: Divide and Conquer}
+\noindent \textbf{Idea 1: Divide and Conquer}
 
 $\bullet$ Cut the array into two halves.
 
@@ -901,7 +906,7 @@ $\bullet$ Maximizing a Case 3 result $p[j]-p[i]$ means finding the smallest valu
 
 \vspace*{1em}
 
-\textbf{Idea 2: Kadane's Algorithm}
+\noindent \textbf{Idea 2: Kadane's Algorithm}
 
 $\bullet$ Create a \textbf{Profit} array with $Profit[i]=Price[i+1]-Price[i]$.
 
@@ -909,7 +914,9 @@ $\bullet$ Perform the Kadane's Algorithm.
 
 \textbf{Time Complexity:} $O(n)$
 
-\subsection{Integer and Matrix Multiplication}
+\end{formal}
+
+\subsection{Integer Multiplication}
 
 \subsubsection{A Simple D\&C Algorithm for Integer Multiplication}
 
@@ -1145,36 +1152,46 @@ $\bullet$ $n/b$ could be either $\lfloor n/b \rfloor$ or $\lceil n/b \rceil$
 
 \subsubsection{Master Theorem for Equalities}
 
-\begin{enumerate}[label=(\arabic*)]
-	\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = \Theta(n^c)$
+\begin{formal}{Green}{greenshade}
 	
-	\item Work Remains: $f(n) = \Theta(n^c \log^k n)$ for $k > -1 \implies T(n) = \Theta(n^c \log^{k+1} n)$
+	\begin{enumerate}[label=(\arabic*)]
+		\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = \Theta(n^c)$
+		
+		\item Work Remains: $f(n) = \Theta(n^c \log^k n)$ for $k > -1 \implies T(n) = \Theta(n^c \log^{k+1} n)$
+		
+		Note: For the case $k = -1$, $T(n) = \Theta(n^c \log \log n)$;\quad
+		For the case $k < -1$, $T(n) = \Theta(n^c)$
+		
+		\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = \Theta(f(n))$
+		
+		Note: Rigorously, the third case requires $af(n/b) \leq kf(n)$ for some $k<1$ and sufficiently large $n$
+		
+		\item For a special case $T(n) = \sum_i T(\alpha_i n) + n$ where $\alpha_i > 0$ with $\sum_i \alpha_i < 1$, we have $T(n) = \Theta(n)$
+	\end{enumerate}
 	
-	Note: For the case $k = -1$, $T(n) = \Theta(n^c \log \log n)$;\quad
-	For the case $k < -1$, $T(n) = \Theta(n^c)$
-	
-	\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = \Theta(f(n))$
-	
-	Note: Rigorously, the third case requires $af(n/b) \leq kf(n)$ for some $k<1$ and sufficiently large $n$
-	
-	\item For a special case $T(n) = \sum_i T(\alpha_i n) + n$ where $\alpha_i > 0$ with $\sum_i \alpha_i < 1$, we have $T(n) = \Theta(n)$
-\end{enumerate}
+\end{formal}
+
+
 
 \subsubsection{Master Theorem for Inequalities}
 
-\begin{enumerate}[label=(\arabic*)]
-	\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = O(n^c)$
+\begin{formal}{Green}{greenshade}
 	
-	\item Work Remains: $f(n) = O(n^c) \implies T(n) = O(n^c \log n)$
+	\begin{enumerate}[label=(\arabic*)]
+		\item Work Increases: $f(n) = O(n^{c-\epsilon})$ for some $\epsilon \implies T(n) = O(n^c)$
+		
+		\item Work Remains: $f(n) = O(n^c) \implies T(n) = O(n^c \log n)$
+		
+		\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = O(f(n))$
+	\end{enumerate}
 	
-	\item Work Decreases: $f(n) = \Omega(n^{c+\epsilon})$ for some $\epsilon \implies T(n) = O(f(n))$
-\end{enumerate}
+\end{formal}
 
 \newpage
 
 \section{Basic Randomized Algorithms}
 
-\subsection{Probability \& Statistics}
+\subsection{Probability \& Statistics, Random Permutation}
 
 $$
 E[X] = \sum i \cdot Pr[X = i]
@@ -1189,8 +1206,6 @@ For independent random variables $X$ \& $Y$,
 $$
 E[XY] = E[X] \cdot E[Y]
 $$
-
-\subsection{Generate a Random Permutation}
 
 \begin{algorithm}
 	\SetAlgoLined
@@ -1209,7 +1224,7 @@ $$
 	\caption{Random Permutation}
 \end{algorithm}
 
-\subsection{Quick Sort}
+\subsection{Quicksort}
 
 \textbf{Idea:} Quicksort chooses item as pivot. It partitions array so that all items less than or equal to pivot are on the left and all items greater than pivot on the right. It then recursively Quicksorts left and right sides.
 
@@ -1260,7 +1275,7 @@ $$
 
 	}
 	
-	\caption{Quick Sort}
+	\caption{Quicksort}
 \end{algorithm}
 
 \newpage
@@ -1280,7 +1295,7 @@ To make running time independent of input, we can randomly choose an element as 
 	\includegraphics[width=0.8\textwidth]{img4-1}
 \end{figure}
 
-\subsubsection{Expected Running Time for Random-Based Quick Sort} 
+\subsubsection{Expected Running Time for Random-Based Quicksort} 
 
 $\bullet$ Two elements $z_i$ and $z_j$ are compared at most once, iff $z_i$ or $z_j$ is the first to be chosen among $z_i, \cdots, z_j$
 
@@ -1290,20 +1305,279 @@ $$
 \implies E_{\text{Num of comparisons made}} = \sum_{i<j} \frac{2}{j-1+1} = O(n\log n)
 $$
 
+\subsubsection{Find the i-th Smallest Element Using Quicksort}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Find the i-th Smallest Element}
+	
+	Given an unsorted array $A[1\dots n]$ and an integer $i$, return the $i$-th smallest element of $A[1\dots n]$.
+	
+\vspace*{1em}
+
+\noindent \textbf{Idea:}
+
+\noindent 1. Choose a Pivot $x$ from $A[p\dots r]$
+
+\noindent 2. Partition $A$ around $x$. (linear time)
+
+\noindent 3. After partitioning, pivot $x$ will be at known location $q$
+
+If $i = q-p+1$, then $x$ is the actual solution
+
+If $i < q-p+1$, then the $i$-th element of $A[p\dots r]$ is the $i$-th element of $A[p\dots q-1]$, solve recursively
+
+If $i > q-p+1$, then the $i$-th element of $A[p\dots r]$ is the $j = (i-q+p-1)$-th element of $A[q+1\dots r]$, solve recursively
+
+\end{formal}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Select}{Select}
+	\Select{$A, p, r, i$}{
+		
+		\If{$p=r$}{
+			\Return{$A[p]$}
+		}
+		
+		Randomly choose an element in $A[p\dots r]$ as the pivot and swap it with $A[r]$
+		
+		$q$ \gets Partition($A, p, r$)
+		
+		$k$ \gets $q-p+1$
+		
+		\If{$i=k$}{
+			\Return{$A[q]$}
+		}
+	
+		\ElseIf{$i<k$}{
+			
+			\Return{\Select{$A, p, q-1, i$}}
+			
+		}
+
+		\Else{
+		
+			\Return{\Select{$A, q+1, r, i-k$}}
+		
+		}
+		
+	}
+	
+	\underline{First Call:} \Select{$A, 1, n, i$}
+	
+	\caption{i-th Smallest Element}
+\end{algorithm}
+
+\subsubsection{Expected Running Time for Finding the i-th Smallest Element}
+
+$\bullet$ A pivot is "good" if it's between the 25\%- and 75\%-percentile of sorted $A$, eliminating at least 1/4 of the array. The probability for such "good" pivot is 1/2.
+
+$\bullet$ Let $i$-th stage be the time between the $i$-th good pivot (not including) and the $(i+1)$-st good pivot (including), $i=0, 1, 2, \cdots$, then the expected pivots selected within a stage is 2.
+
+$\bullet$ Let $Y_i =$ the running time of $i$-th stage, $X_i =$ the num. of pivots (recursive calls) in $i$-th stage. Then $Y_i \leq X_i (3/4)^i n$.
+$$
+\implies E[Y_i] \leq E[X_i (3/4)^i n] = 2(3/4)^i n \implies \text{Expected Total Running Time} \leq E[\sum_i Y_i] \leq \sum_i 2(3/4)^i n = O(n)
+$$
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: i-th Smallest Element in Two Sorted Arrays}
+	
+	Given two sorted arrays $A1$ and $A2$ of sizes $m$ and $n$. Design an
+	algorithm to find the $k$-th smallest element in the union of the elements in $A1$ and $A2$ $(k \leq m+n)$.
+	
+\end{formal}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Search}{Search}
+	\Search{$\text{array }A1, \text{array }A2, \text{start1 }1, \text{end1 }k, \text{start2 }1, \text{end2 }k, \text{Order }k$}{
+		
+		\textbf{Main Idea:} Compare elements $A1[k/2]$ and $A2[k/2]$
+		
+		\If{$A1[k/2] < A2[k/2]$}{
+			
+			Eliminate first half of $A1$
+			
+			\Return{\Search{$A1, A2, k/2+1, \text{end1}, \text{start2}, \text{end2}, k/2$}}
+			
+		}
+		
+		\Else{
+		
+			Eliminate first half of $A2$
+			
+			\Return{\Search{$A1, A2, \text{start1}, \text{end1}, k/2+1, \text{end2}, k/2$}}
+		
+		}
+		
+	}
+	
+	\caption{i-th Smallest Element in Two Sorted Arrays}
+\end{algorithm}
+
+\textbf{Time Complexity:} $\Theta(\log k)$
+
+\newpage
+
+\subsection{Heapsort}
+
+\subsubsection{Priority Queues}
+
+\textbf{Main Idea:} Processing the shortest job first - Extracting the smallest element from the queue.
+
+A Priority Queue is an abstract data structure that supports two 
+operations: Insert \& Extract-Min.
+
+\textbf{Implementations:}
+
+1. Unsorted list + a pointer to the smallest element: $O(1)$ Insert \& $O(n)$ Extract-Min
+
+2. Sorted doubly linked list + a pointer to first element: $O(n)$ Insert \& $O(1)$ Extract-Min
+
+\subsubsection{Binary Heap Implementation}
+
+$\bullet$ All levels are full except possibly the lowest level
+
+$\bullet$ If the lowest level is not full, then nodes must be packed to 
+the left
+
+$\bullet$ The value of a node is at least the value of its parent — Min-heap
+
+$\bullet$ Both Insert \& Extract-Min can be done in $O(\log n)$ time
+
+\begin{formal}{DarkBlue}{blueshade}
+	
+	\textbf{Notice}
+	
+	The binary tree here is DIFFERENT from the Binary Search Tree, which requires ALL left nodes $<$ parent, while ALL right nodes $>$ parent.
+	
+\end{formal}
+
+\textbf{Array Implementation of Heap}
+
+$\bullet$ The root is in array position 1
+
+$\bullet$ For any element in array position $i$, the left child is in position $2i$, the right child is in position $2i+1$, the parent is in position $\lfloor i/2 \rfloor$
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.2\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img4-2}
+		%\caption{}
+	\end{subfigure}
+	%\hfill
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img4-3}
+		%\caption{}
+	\end{subfigure}
+	%\caption{}
+\end{figure}
+
+\subsubsection{Heapsort}
+
+\textbf{Insert}
+
+$\bullet$ Add the new element to the next available position at the lowest level.
+
+$\bullet$ Restore the min-heap property if violated.
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Insert}{Insert}
+	\Insert{$x, i$}{
+		
+		$A[i]$ \gets $x$
+		
+		$j=i$
+		
+		\While(// $A[j]$ is less than its parent){$j>1$ and $A[j] < A[\lfloor j/2 \rfloor]$}{
+			
+			Swap $A[j]$ and $A[\lfloor j/2 \rfloor]$
+			
+		}
+	
+		$j=\lfloor j/2 \rfloor$
+		
+	}
+	
+	\caption{Add item $x$ to heap $A[1 \dots i-1]$}
+\end{algorithm}
+
+\textbf{Time Complexity:} $O(\log n)$
+
+\newpage
+
+\textbf{Extract-Min:} Should preserve both min-heap property \& completeness
+
+$\bullet$ Copy the last element to the root (overwrite).
+
+$\bullet$ Restore the min-heap property by percolating (or bubbling 
+down): if the element is larger than either of its children, then
+interchange it with the smaller of its children.
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Extract}{Extract-Min}
+	\Extract{$i$}{
+		
+		Output($A[1]$)
+		
+		Swap $A[1]$ and $A[i]$
+		
+		$A[i] = \infty$, $j = 1$, $l = A[2j]$, $r = A[2j+1]$ // Left \& Right Children
+		
+		\While( // if $A[j]$ is larger than a child, swap with the smaller child){$A[j] > \min(l, r)$}{
+		
+			\If{$l<r$}{
+			
+				Swap $A[j]$ with $A[2j]$, $j=2j$
+			
+			}
+		
+			\Else{
+			
+				Swap $A[j]$ with $A[2j+1]$, $j=2j+1$
+			
+			}
+
+			$l=A[2j], r=A[2j+1]$
+
+		}
+		
+	}
+	
+	\caption{Remove the smallest item $A[1]$ in the heap $A[1 \dots i]$}
+\end{algorithm}
+
+\textbf{Time Complexity:} $O(\log n)$
+
+\textbf{Total Time Complexity:} Build a binary heap of $n$ elements \& Perform $n$ Extract-Min operations: $O(n\log n)$
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Merging $k$ Sorted Arrays}
+	
+	Suppose that you have $k$ sorted arrays, each with $n$ elements, and you want to combine them into a single sorted array of $kn$ elements.
+
+\textbf{Solution 1:} Merge the first two arrays, then merge it with the third, and so on. Time Complexity = $\sum_{i=2}^k in = O(k^2 n)$
+
+\textbf{Solution 2:} Divide recursively $k$ sorted arrays into two parts, conduct the merging for the subproblems. $T(k) = 2T(k/2) + kn \implies \text{Time Complexity = }T(k) = O(kn\log k)$
+
+\textbf{Solution 3 (Heapsort):} Insert the first element of each array into an empty min-heap. Extract-min every time and insert the next item of in the same array as the one being extracted. Time Complexity = $O(kn\log k)$
+
+\end{formal}
+
+\begin{formal}{Brown}{brownshade}
+
+	\textbf{[Operation] Decrease-Key: Decreases the value of one specified element (Used in Dijkstra's Algorithm)}
+	
+\textbf{Modification of the heaps to support it in $O(\log n)$ time:}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+	
+\end{formal}
 
 
 
@@ -1331,7 +1605,34 @@ $$
 
 \newpage
 
+\section{Graph Algorithms}
+
+\subsection{Breadth \& Depth First Search}
+
+\subsection{Shortest Paths}
+
+\subsection{Shortest Paths}
+
+\subsection{Maximum Flow and Bipartite Matchings}
+
+\section{AVL Trees}
+
+\section{Basic String Matching}
+
+\section{Hashing}
+
+
+
+
+
+
+
+
+\newpage
+
 \end{document}
+
+\begin{comment}
 
 \section*{Homework 1}
 
@@ -1609,10 +1910,90 @@ $$
 
 \newpage
 
+\end{comment}
+
 \section*{Homework 2}
 
 \textbf{Name: LIN, Xuanyu, SID: 20838295, Email Address: xlinbf@connect.ust.hk}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw2-1}
+\end{figure}
+
+\textbf{Solution.}
+
+(a) Algorithm that generates the data structure $C$:
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Func}{Func}
+	\Func{$A$}{
+		
+		\If{}{
+			\Return
+		}
+		
+		\For{}{
+			
+		}
+		
+		\Return{}
+		
+		\underline{First Call:} \Func{$$}
+		
+	}
+	
+	\caption{Func}
+\end{algorithm}
+
+
+
+
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw2-2}
+\end{figure}
+
+\textbf{Solution.}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw2-3}
+\end{figure}
+
+\textbf{Solution.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw2-4}
+\end{figure}
+
+\textbf{Solution.}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw2-5}
+\end{figure}
+
+\textbf{Solution.}
+
+\newpage
+
+\begin{Problem}
+	
+\end{Problem}
+
+\textbf{Solution.}
+
+\newpage
+
 \begin{Problem}
 	
 \end{Problem}
@@ -1634,5 +2015,7 @@ $$
 \end{Problem}
 
 \textbf{Solution.}
+
+\newpage
 
 \end{document}

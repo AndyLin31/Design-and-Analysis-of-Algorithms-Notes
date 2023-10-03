@@ -14,7 +14,7 @@
 \contentsline {subsection}{\numberline {3.5}Maximum Contiguous Subarray}{7}{subsection.3.5}%
 \contentsline {subsubsection}{\numberline {3.5.1}A D\&C Algorithm}{8}{subsubsection.3.5.1}%
 \contentsline {subsubsection}{\numberline {3.5.2}Kadane's Algorithm}{8}{subsubsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.6}Integer and Matrix Multiplication}{9}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.6}Integer Multiplication}{9}{subsection.3.6}%
 \contentsline {subsubsection}{\numberline {3.6.1}A Simple D\&C Algorithm for Integer Multiplication}{9}{subsubsection.3.6.1}%
 \contentsline {subsubsection}{\numberline {3.6.2}Karatsuba Multiplication}{10}{subsubsection.3.6.2}%
 \contentsline {subsection}{\numberline {3.7}Matrix Multiplication}{10}{subsection.3.7}%
@@ -24,9 +24,22 @@
 \contentsline {subsubsection}{\numberline {3.8.1}Master Theorem for Equalities}{11}{subsubsection.3.8.1}%
 \contentsline {subsubsection}{\numberline {3.8.2}Master Theorem for Inequalities}{11}{subsubsection.3.8.2}%
 \contentsline {section}{\numberline {4}Basic Randomized Algorithms}{12}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Probability \& Statistics}{12}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Generate a Random Permutation}{12}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Quick Sort}{12}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Running Time}{13}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Binary Tree Representation}{13}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}Expected Running Time for Random-Based Quick Sort}{13}{subsubsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.1}Probability \& Statistics, Random Permutation}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Quicksort}{12}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Running Time}{13}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Binary Tree Representation}{13}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Expected Running Time for Random-Based Quicksort}{13}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Find the i-th Smallest Element Using Quicksort}{13}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}Expected Running Time for Finding the i-th Smallest Element}{14}{subsubsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.3}Heapsort}{15}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Priority Queues}{15}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Binary Heap Implementation}{15}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Heapsort}{15}{subsubsection.4.3.3}%
+\contentsline {section}{\numberline {5}Graph Algorithms}{17}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Breadth \& Depth First Search}{17}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Shortest Paths}{17}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Shortest Paths}{17}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Maximum Flow and Bipartite Matchings}{17}{subsection.5.4}%
+\contentsline {section}{\numberline {6}AVL Trees}{17}{section.6}%
+\contentsline {section}{\numberline {7}Basic String Matching}{17}{section.7}%
+\contentsline {section}{\numberline {8}Hashing}{17}{section.8}%
