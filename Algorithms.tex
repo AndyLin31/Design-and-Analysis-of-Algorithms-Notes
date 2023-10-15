@@ -1699,44 +1699,178 @@ $\bullet$ Assumes that the elements are integers from 1 to $k$
 \end{tabular}
 \end{center}
 
+\newpage
 
+\section{Greedy Algorithms}
+A greedy algorithm always makes the choice that looks best at the moment and adds it to the current partial solution.
 
+Greedy algorithms don't always yield optimal solutions, but when they do, they're usually the simplest and most efficient algorithms available.
 
+Usually, greedy algorithms involve a sorting step that dominates the total cost.
 
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Interval Scheduling}
 
+	Job $j$ starts at $s_j$ and finishes at $f_j$.
 
+	Two jobs are compatible if they don't overlap.
 
+	Goal: Find maximum size subset \textbf{(Note: Not the longest duration)} of mutually compatible jobs.
 
+\end{formal}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img5-1}
+\end{figure}
 
+\textbf{Three Possible Rules:}
 
+$\bullet$ [Earliest Start Time] Consider jobs in increasing order of start time $s_j$.
 
+$\bullet$ [Shortest Interval] Consider jobs in increasing order of duration $f_j - s_j$.
 
+$\bullet$ [Fewest Conflicts] Consider jobs in increasing order of number of conflicts $c_j$ with other jobs.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img5-2}
+\end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\end{document}
+All three rules may not yield optimal solutions.
 
 \newpage
+
+\textbf{Correct Greedy Algorithm:}
+
+Consider jobs in increasing order of finish time $f_j$. Take each job if compatible with all previously taken jobs.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img5-3}
+\end{figure}
+\begin{algorithm}
+	\SetAlgoLined
+	Sort jobs by finish time $f_j$, i.e. $f_1 \leq f_2 \leq \cdots \leq f_n$
+
+	$A \gets \varnothing$, $last \gets 0$
+
+	\For{$j \gets 1$ to $n$}{
+	
+		\If{$s_j \geq last$}{
+		
+			$A \gets A \cup \{j\}$
+			
+			$last \gets f_j$
+		
+		}
+	
+	}
+
+	\Return{$A$}
+
+	\caption{Greedy Algorithm}
+\end{algorithm}
+
+See Page 13 of \href{C:/Users/user/OneDrive\%20-\%20HKUST\%20Connect/University/Computer/Design\%20and\%20Analysis\%20of\%20Algorithms/Lecture\%20Notes/11_Greedy_all.pdf\#page=13}{11\_Greedy\_all.pdf} for the proof.
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: The Fractional Knapsack Problem}
+
+	Input: Set of $n$ items: item $i$ has weight $w_i$ and value $v_i$, and a knapsack with capacity $W$.
+
+	Goal: Find $0 \leq x_1, \dots, x_n \leq 1$ to maximize $\sum_{i=1}^n v_i x_i$ subject to $\sum_{i=1}^n w_i x_i \leq W$.
+	(Note: $x_i$ is the fraction of item $i$ to be taken)
+
+	$\bullet$ The $x_i$ must be 0 or 1: The 0/1 knapsack problem.
+
+	$\bullet$ The $x_i$ can be any value in [0,1]: The fractional knapsack problem.
+
+\end{formal}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{FractionalKnapsack}{Fractional-Knapsack}
+	\FractionalKnapsack{$w, v, W, x[]$}{
+	
+		Sort $\frac{v_i}{w_1}$ so that $\frac{v_1}{w_1} \geq \frac{v_2}{w_2} \geq \cdots \geq \frac{v_n}{w_n}$
+
+		\For{$i \gets 1$ to $n$}{
+
+			\If{$w_i$ < W}{
+
+				$x_i \gets 1$
+
+				$W \gets W - w_i$
+
+			}
+
+			\Else{
+
+				$x_i \gets W / w_i$
+
+				\Return{$x$}
+
+			}
+
+		}
+
+		\Return{$x$}
+	
+	}
+	
+	\caption{Fractional-Knapsack Algorithm}
+\end{algorithm}
+
+\newpage
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Hiking Problem}
+
+	Suppose you are going on a hiking trip over multiple days. For safety reasons you can only hike during daytime. You can travel at most $d$ kilometers per day, and there are $n$ camping sites along the hiking trail where you can make stops at night.
+	Assuming the starting point of the trail is at position $x_0 = 0$, the camping sites are at locations $x_1, \cdots, x_n$, and the end of the trail is at position $x_n$.
+	Design an $O(n)$-time algorithm to find a plan that uses the minimum number of days to finish the trip. You can assume that $x_{i+1} − x_i \leq d$ for all $i$ (otherwise there is no solution).
+
+	\textbf{Idea:} For each day $i$, stop at the furthest camping site, i.e. stop at the largest $x_j$ such that $x_j$ minus the start location of day $i$ is at most $d$.
+
+\end{formal}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Interval Partitioning}
+
+	Lecture $j$ starts at $s_j$ and finishes at $f_j$. Two lectures are compatible if they don't overlap. Goal: Find minimum number of classrooms to schedule all lectures.
+
+	\textbf{Idea:} Sort the class by start time. Insert in order, opening new classroom when needed.
+
+\end{formal}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Graph Algorithms}
 
@@ -1754,18 +1888,7 @@ $\bullet$ Assumes that the elements are integers from 1 to $k$
 
 \section{Hashing}
 
-
-
-
-
-
-
-
 \newpage
-
-\end{document}
-
-\begin{comment}
 
 \section*{Homework 1}
 
@@ -2043,8 +2166,6 @@ $$
 
 \newpage
 
-\end{comment}
-
 \section*{Homework 2}
 
 \textbf{Name: LIN, Xuanyu, SID: 20838295, Email Address: xlinbf@connect.ust.hk}
@@ -2056,32 +2177,33 @@ $$
 
 \textbf{Solution.}
 
-(a) Algorithm that generates the data structure $C$:
-\begin{algorithm}
-	\SetAlgoLined
-	\SetKwFunction{Func}{Func}
-	\Func{$A$}{
-		
-		\If{}{
-			\Return
-		}
-		
-		\For{}{
-			
-		}
-		
-		\Return{}
-		
-		\underline{First Call:} \Func{$$}
-		
-	}
-	
-	\caption{Func}
-\end{algorithm}
+(a) \textbf{Main Idea:} Construct a segment tree data structure such that each node stores the count of numbers within a specific range. The root represent the whole range of the sequence, with its left and right children represent two halves of its range. If a range doesn't contain any number, then the node ends.
 
+In such tree structure, we can get the range query by starting at the root node of the segment tree and going through its nodes according to the rule:
 
+$\bullet$ If the current node's range falls completely within the query range, return its count.
 
+$\bullet$ If the current node's range does not overlap with the query range, return 0.
 
+$\bullet$ Otherwise, recursively query the left and right child nodes and return the sum their results.
+
+\textbf{Space Occupied:} $O(1+2+4+\cdots+n) = O(2n-1) = O(n)$
+
+\textbf{Time Complexity:} $O(\log n)$ as it's a binary tree structure.
+
+(b) \textbf{Main Idea:} Construct a array with length as large as the maximum number of the given array to store the sum of the numbers that are smaller than the index of the current position.
+
+The detail are as follows:
+
+$\bullet$ Suppose the largest element of the array is $k$, construct an array of $k$ numbers, calling it $A[k]$.
+
+$\bullet$ $A[0] = 0$. For $i = 0$ to $k$, $A[i] = A[i-1] + i \times \#\text{Number of elements equal to $i$ in the array}$
+
+$\bullet$ To get the range-sum in $(i, j]$, simply substract $A[j]$ by $A[i]$ to get the answer in $O(1)$ time.
+
+\textbf{Space Occupied:} $O(k)$ where $k$ is the largest element in the array.
+
+\textbf{Time Complexity:} $O(1)$
 
 \newpage
 
@@ -2092,6 +2214,24 @@ $$
 
 \textbf{Solution.}
 
+\textbf{First Attempt:} Make use of the Batcher's odd even merge sort algorithm, construct a sorting network. We can construct a sorting network which consists of $\log_2 n$ stages, with wach stage having $n/2$ switches. (No further idea about such method)
+
+\textbf{Reference:} \href{https://en.wikipedia.org/wiki/Batcher_odd%E2%80%93even_mergesort}{Wiki: Batcher's Odd Even Merge Sort}
+
+\textbf{Second Attempt:} Make use of the binary tree construction. First, construct a binary tree with $n$ inputs being placed at $n$ nodes in a tree with height $\log n$. At each node, a switch is placed to switch the position of, and only the position of its two children. The tree is constructed via pre-order tree transversal. After all the switches are set to a specific state, the output is extracted accordingly also via pre-order tree transversal.
+
+Total switches used:
+$$
+\sum_{i=1}^{\log n} \frac{n}{2^i} = O(n\log n)
+$$
+
+\textbf{Correctness:} We are proving that different types of combination of switches yeilds distinct solutions, so that using $O(n\log n)$ switches, we are able to perform $2^{n\log n} \sim n!$ distinct types of output.
+
+By modifying a switch at a node, we're only modifying the two children which is directly connected to the current node, i.e, whenever the states of the switches are not identical, the two trees are not identical, resulting in the different extracted result via pre-order tree transversal. Thus, $O(n\log n)$ switches are enough to generate all the $n!$ distinct permutations of the array.
+
+\textbf{Reference:}
+\href{https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/}{Tree Traversal Techniques – Data Structure and Algorithm Tutorials}
+
 \newpage
 
 \begin{figure}[h]
@@ -2101,12 +2241,52 @@ $$
 
 \textbf{Solution.}
 
+\textbf{Main Idea:} Use divide-and-conquer to find the largest element, which requires $n-1$ comparisons. During such comparison, the second largest element must be eliminated by the largest element. As a result, we are able to examine through the $\log_2 n$ to get the second larget element.
+
+$\bullet$ To get the largest element, we've conducted the comparison like a "single elimination tournament" with guaranteed $n-1$ comparisons.
+
+$\bullet$ Note that the second largest element must be eliminated by the largest element. Thus, we construct a list for every of the $n$ element to store all the elements eliminated by this number. Every time when we eliminate an element, we append the number eliminated by it (the "loser" of the comparison) to the list of the "winner".
+
+$\bullet$ After we've got the largest element, we traverse through the list stored by the largest element to obtain the second largest element. The list contains $\log n$ elements, which requires $\log n - 1$ comparisons.
+
+$\bullet$ Thus, we need $n + \log n - 2$ comparisons in total.
+
+\newpage
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\textwidth]{hw2-4}
 \end{figure}
 
-\textbf{Solution.}
+\textbf{Proof.}
+
+The algorithm is identical as the procedure described as below:
+
+$\bullet$ First, randomly choose a number in range $[1, n-m+1]$ to append to $S$.
+
+$\bullet$ Next, randomly choose a number in range $[1, n-m+2]$ to append to $S$. If it's already in $S$, then append $n-m+2$ to $S$.
+
+$\bullet$ Then, randomly choose a number in range $[1, n-m+3]$ to append to $S$. If it's already in $S$, then append $n-m+3$ to $S$.
+
+$\bullet$ $\cdots$
+
+$\bullet$ Finally, randomly choose a number in range $[1, n]$ to append to $S$. If it's already in $S$, then append $n$ to $S$. (A total of $m$ random pick is conducted)
+
+We can check the consistency of the probability by calculating the probability of each number to be chosen.
+
+Consider an arbitrary number $k$, evaluating the probability of $k$ NOT to be chosen:
+
+$\bullet$ If $k \leq n-m+1$, then
+$$
+\text{The number $k$ is NOT chosen} = \frac{n-m}{n-m+1} \cdot \frac{n-m+1}{n-m+2} \cdots \frac{n-1}{n} = \frac{n-m}{n}
+$$
+
+$\bullet$ Suppose $n-m+1 < k \leq n$, then we've already chosen $k-n+m-1$ numbers $\implies$ At the random draw in range $[1, k]$, the probability of $k$ NOT to be chosen is $[k-(k-n+m-1+1)]/k = (n-m)/k$. (Condition: At the draw in range $[1, k]$, neither the elements that have been drawn nor $k$ itself are pulled out) In the remaining random pick, the calculation is the same as the above circumstance.
+$$
+\text{The number $k$ is NOT chosen} = \frac{n-m}{k} \cdot \frac{k}{k+1} \cdots \frac{n-1}{n} = \frac{n-m}{n}
+$$
+
+From the above discussion, we see that the probabilities of each elements to be drawn are identical, all equals to $1-\frac{n-m}{n} = \frac{m}{n}$. This yields directly that the probability of each combination of RANDOM-SAMPLE to be drawn is also identical.
 
 \newpage
 
@@ -2114,8 +2294,46 @@ $$
 	\centering
 	\includegraphics[width=0.6\textwidth]{hw2-5}
 \end{figure}
+Note: The summation range should be from 2 to $n-1$ instead of 1 to $n-1$ for (d).
 
 \textbf{Solution.}
+
+(a) In the quicksort, the probabilities of each element to be chosen are identical, all equals to $1/n$, where $n$ indicates the number of elements.
+$$
+\implies E[X_i] = \frac{1}{n}
+$$
+
+(b) Note that according to the quicksort, the array to be sorted is splitted into two subarrays according to the element that is randomly chosen. The two subarrays are of length $i-1$ and $n-i$ if the $i$-th smallest element is chosen randomly. According to the recursive algorithm, the "Merge" step requires $\Theta(n)$ time. Thus,
+$$
+E[T(n)] = E\bigg[\sum_{i=1}^{n} X_i \cdot (T(i-1) + T(n-i) + \Theta(n))\bigg]
+$$
+
+(c) The deriviation is as follows:
+$$
+\begin{aligned}
+	E[T(n)] &= E\bigg[\sum_{i=1}^{n} X_i \cdot (T(i-1) + T(n-i) + \Theta(n))\bigg] = E\bigg[\sum_{i=1}^{n} \frac{1}{n} \cdot (T(i-1) + T(n-i) + \Theta(n))\bigg]\\
+	&= \Theta(n) + \frac{1}{n} \cdot E\bigg[\sum_{i=1}^{n} (T(i-1) + T(n-i))\bigg] = \Theta(n) + \frac{2}{n} \sum_{i=1}^{n} E[T(i-1)] = \Theta(n) + \frac{2}{n} \sum_{i=0}^{n-1} E[T(i)] = \Theta(n) + \frac{2}{n} \sum_{i=2}^{n-1} E[T(i)]
+\end{aligned}
+$$
+
+(d) According to the integral inequality, the left hand rule,
+$$
+\sum_{k=2}^{n-1} k \log k \leq \int_2^n k \log k = \frac{\frac{k^2}{2} \log k - \frac{k^2}{4}}{\log 2}\bigg|_2^n = \frac{n^2}{2} \log n - \frac{n^2}{4 \log 2} - 1
+$$
+$$
+\implies \sum_{k=2}^{n-1} k \ln k \leq \frac{n^2}{2} \log n - \frac{n^2}{4 \log 2} - 1 \leq \frac{n^2}{2} \log n - \frac{n^2}{8}
+$$
+
+(e) Recurrence:
+$$
+\begin{aligned}
+	E[T(n)] &= \Theta(n) + \frac{2}{n} \sum_{i=2}^{n-1} E[T(i)] \leq \Theta(n) + \frac{2}{n} \sum_{i=2}^{n-1} [i \log i + \Theta(n)] \leq \Theta(n) + \frac{2}{n} \sum_{i=2}^{n-1} i \log i\\
+	&\leq \frac{2}{n} \bigg[\frac{n^2 \log n}{2} - \frac{n^2}{8}\bigg] + \Theta(n) = n \log n - \frac{1}{4} n + \Theta(n) = n \log n + \Theta(n)
+\end{aligned}
+$$
+
+
+
 
 \newpage
 
