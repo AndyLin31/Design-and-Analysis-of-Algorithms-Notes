@@ -28,6 +28,7 @@
 \usepackage{unicode-math}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{mathrsfs}
 \setmathfont{Latin Modern Math}
 % \usepackage{amssymb} % Contained in package unicode-math
@@ -1702,6 +1703,9 @@ $\bullet$ Assumes that the elements are integers from 1 to $k$
 \newpage
 
 \section{Greedy Algorithms}
+
+\subsection{Basic Greedy Algorithms}
+
 A greedy algorithm always makes the choice that looks best at the moment and adds it to the current partial solution.
 
 Greedy algorithms don't always yield optimal solutions, but when they do, they're usually the simplest and most efficient algorithms available.
@@ -1847,13 +1851,119 @@ See Page 13 of \href{C:/Users/user/OneDrive\%20-\%20HKUST\%20Connect/University/
 
 \end{formal}
 
+\subsection{Huffman Coding}
 
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Huffman Coding}
 
+	\textbf{Input:} A set of characters and their frequencies.
 
+	\textbf{Goal:} Find a prefix-free binary code (i.e. no codeword is a prefix of another) with minimum expected codeword length.
 
+	\textbf{Rigorous Problem Definition:} Given an alphabet $A$ of $n$ characters $a_1,\cdots,a_n$ with weights $f(a_1),\cdots,f(a_n)$, find a binary tree $T$ with $n$ leaves labeled $a_1,\cdots,a_n$ such that
+	\[
+		B(T) = \sum_{i=1}^n f(a_i) \cdot d_T(a_i)
+	\]
+	
+	is minimized, where $d_T(a_i)$ is the depth of leaf $a_i$ in $T$.
+	
+	\textbf{Greedy Idea:}
 
+	$\bullet$ Pick two characters $x, y$ from $A$ with the smallest weights
+	
+	$\bullet$ Create a subtree that has these two characters as leaves
 
+	$\bullet$ Label the root of this subtree as $z$ and set $f(z)\gets f(x)+f(y)$
 
+	$\bullet$ Remove $x$ and $y$ from $A$ and add $z$ to $A$
+
+	$\bullet$ Repeat until only one character is left
+
+\end{formal}
+
+See Page 13 of \href{C:/Users/user/OneDrive\%20-\%20HKUST\%20Connect/University/Computer/Design\%20and\%20Analysis\%20of\%20Algorithms/Lecture\%20Notes/12_Huffman_all.pdf\#page=13}{12\_Huffman\_all.pdf} for the proof.
+
+\subsection{Stable Matching}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Stable Matching Problem}
+
+	\textbf{Problem:} Finding a stable matching between two equally sized of elements given an ordering of preferences for each element. A matching is a bijection from the elements of one set to the elements of the other set.
+
+	\textbf{Input:} Two sets $A$ and $B$ of equal size $n$, each with a strict ordering of preferences for the elements of the other set.
+
+	\textbf{Output:} A matching $M$ between $A$ and $B$ such that there is no pair $(a, b)$ and $(a', b')$ in $M$ such that $a$ prefers $b'$ to $b$ and $b'$ prefers $a$ to $a'$.
+
+\end{formal}
+
+\newpage
+
+\subsubsection*{Gale-Shapley Algorithm [Gale-Shapley 1962]}
+
+Intuitive algorithm that guarantees to find a stable matching.
+
+Also known as the deferred acceptance algorithm or propose-and-reject algorithm.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{GaleShapley}{Gale-Shapley}
+	\GaleShapley{}{
+	
+		Initialize each participant (employers and applicants) to be free.
+
+		\While{some employer is free and has an applicant to send an offer to}{
+
+			Choose such an employer e
+
+			a = 1st applicant on e's list to whom e has not yet sent an offer
+
+			\If{a is free}{
+				assign e and a to be matched
+			}
+			\ElseIf{a perfers e to the current employer e'}{
+				assign e and a to be matched, and e' to be free
+			}
+			\Else{
+				a rejects e
+			}
+
+		}
+
+	}
+	
+	\caption{Gale-Shapley Algorithm}
+\end{algorithm}
+
+\textbf{Time Complexity:} Algorithm terminates after at most $n^2$ iterations of while loop, as each employer can only send at most 1 offer to each of the $n$ applicants.
+
+\textbf{Efficient Implementation Details:}
+
+To evaluate whether a perfers e to the current employer e', we can create inverse of preference list of employers for each applicant. Such structure yields a constant time access for comparison and requires $O(n^2)$ (Same as the current time complexity) for all applicants.
+
+\textbf{Note:}
+
+$\bullet$ For a given problem instance, several stable matchings might exist. All executions of Gale-Shapley (for different orders in which employers send offer) yield the same stable matching result, which is optimal for the employers. (i.e. each employer gets the best possible partner in any possible stable matching)
+
+$\bullet$ To get an applicant optimal algorithm, let applicants apply and employers accept/reject (apply the algorithm in reverse order)
+
+$\bullet$ Suppose the graph is not bi-partite. i.e. for each of the $2n$ person, we have the list of preferences, over the remaining $2n-1$ person, then there may not be a stable matching.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img5-4}
+\end{figure}
+
+\section{Dynamic Programming}
+
+\subsection{1D Dynamic Programming}
+
+\subsection{2D Dynamic Programming}
+
+\subsection{Dynamic Programming over Intervals}
+
+\subsection{Summary of Dynamic Programming}
 
 
 
@@ -2332,40 +2442,331 @@ $$
 \end{aligned}
 $$
 
+\newpage
 
+\section*{Homework 3}
 
+\textbf{Name: LIN, Xuanyu, SID: 20838295, Email Address: xlinbf@connect.ust.hk}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{hw3-1(1)}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{hw3-1(2)}
+\end{figure}
 
 \newpage
 
-\begin{Problem}
-	
-\end{Problem}
-
 \textbf{Solution.}
+
+(a)
+\begin{proof}
+	The proof goes as follows:
+
+	1. There must exists a minimal cover $A$ of $\mathscr{L}$.
+
+	2. If there exists a minimal cover $A$ of $\mathscr{L}$ such that at least one point in $A$ is not any of the $f_j$, then we are able to construct a new cover $A'$ of the same size such that every point in $A'$ is one of the $f_j$.
+
+	1. Easy to see that the set $A_1$ with size in $[1,n]$ consisting of all $s_i$s is a cover of $\mathscr{L}$. This set the upper bound of the size of the minimal set to be $n$. The size of any other possible set $A_2$ has a lower bound, which is 1. Thus, there must exists a minimal cover $A$ of $\mathscr{L}$.
+
+	2. If there exists a minimal cover $A$ of $\mathscr{L}$ such that at least one point in $A$ is not any of the $f_j$, we store such points in a set $B$. For every points $i$ in $B$, we trace the timeline to find the smallest $f_i$ such that $f_i \geq i$.[1] We then replace $i$ with $f_i$ in $A$, forming the new set $A'$ which is still a cover of $\mathscr{L}$, and the size of $A'$ is the same as $A$. Thus, we've constructed a new cover $A'$ of the same size such that every point in $A'$ is one of the $f_j$.
+
+	Note: [1] If there doesn't exist a $f_i \geq i$, that means $i$ is not covered by any interval, which contradicts the assumption that $A$ is a cover of $\mathscr{L}$.
+\end{proof}
+
+(b) The algorithm is as follows:
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{FindMinimalCover}{FindMinimalCover}
+	\KwIn{$n$ sets of intervals $\mathscr{L} = \{I_1, ..., I_n\}$}
+	\KwOut{A minimal cover $A$ of $\mathscr{L}$}
+	\FindMinimalCover{$\mathscr{L}$}{
+		
+		Sort all the intervals in $\mathscr{L}$ in ascending order based on their ending time $f_j$
+
+		\While{$\mathscr{L} != null$} {
+			$A$.append($\mathscr{L}[0].f$) // Append the interval with the smallest ending time to $A$
+
+			$cur_f = \mathscr{L}[0].f$
+			
+			\ForEach{$I \in \mathscr{L}$} {
+				\If{$I.s \leq cur_f$} {
+					$\mathscr{L}$.remove($I$) // Remove all the intervals that are already covered by the current point
+				}
+			}
+
+		}
+		
+		\Return{$A$}
+		
+	}
+
+	\caption{Find a Minimal Cover $A$}
+\end{algorithm}
+
+(c)
+\begin{proof}
+	Suppose the minimal cover genrated by the former algorithm is $A = \{a_1, ..., a_m\}$, and the actual minimal cover is $A' = \{a'_1, ..., a'_{m'}\}$ with $m'<m$.
+
+	We first rank the interval set $\mathscr{L}$ in ascending order based on their ending time $f_j$, resulting in $\mathscr{L} = \{I_{k_1}, I_{k_2}, ..., I_{k_n}\}$.
+
+	1. If there's any element in $A'$ not in $A$, i.e., $\exists \alpha \in A'$ such that $\alpha \notin A$, find the minimal subscript $x$ such that $a_1=a'_1, ..., a_{x-1}=a'_{x-1}$ but $a_x\neq a'_x$.
+
+	1.1 If $a'_x < a_x$, then modifying $a'_x$ to $a_x$ in $A'$ also forms a cover of $\mathscr{L}$ with the same total size. This is because we've already covered all the intervals that ends before $a_x$. If we apply the algorithm to a modified set that elimnates the covered intervals, then $a_x$ is the end of the first interval while $a'_x$ is not. Problem (a) has already proved that we are able to modify any non-$f_j$ point to one of the $f_j$.
+	
+	1.2 If $a'_x > a_x$, then at least one interval is not covered by $A'$. We first eliminate all the intervals that ends before $a_x$. According to the algorithm, $a_x$ is the end of the first non-eliminated interval (i.e., not being covered by previous $a$). If $a'_x > a_x$, then the non-eliminated interval $I_{k_i}$ has the property that $s_{k_i} < f_{k_i} < a'_x$, resulting in $A'$ not covering $I_{k_i}$. Contradiction!
+
+	2. If $A' subsetneqq A$, the previous part already suggested that $A = A'\cup \{a_{m'+1}, a_{m'+2}, ..., a_{m}\}$. However, the previous algorithm already suggested that each of the $a_i$ is an end of some interval $I_{k_i}$ such that $I_{k_i}$ is not covered by the previous items, i.e., $a_{m'+1}$ is the end of ont of $I_{k_i}$, such that $I_{k_i}$ is not covered by $A'$. Thus, $A'$ is not a minimal cover of $\mathscr{L}$. Contradiction!
+\end{proof}
+
+(d) Sorting the intervals in ascending order based on their ending time $f_j$ requires $O(n\log n)$ time. The while loop requires $O(n)$ time. Thus, the total time complexity is $O(n\log n)$.
 
 \newpage
 
-\begin{Problem}
-	
-\end{Problem}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw3-2}
+\end{figure}
 
 \textbf{Solution.}
+
+(a)
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{hw3-2-ans}
+\end{figure}
+
+(b)
+\begin{center}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		Letter & a & b & c & d & e & f & g & h & i & j \\
+		\hline
+		Code & 0100 & 000 & 101 & 1110 & 110 & 011 & 100 & 001 & 0101 & 1111 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+(c)
+\begin{center}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		Letter & b & c & e & f & g & h & a & d & i & j \\
+		\hline
+		Code & 000 & 101 & 110 & 011 & 100 & 011 & 0100 & 1110 & 0101 & 1111 \\
+		\hline
+	\end{tabular}
+\end{center}
 
 \newpage
 
-\begin{Problem}
-	
-\end{Problem}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw3-3}
+\end{figure}
 
 \textbf{Solution.}
+
+1. $p_1$ sends offer to $j_4$: $p_1-j_4$
+
+2. $p_2$ sends offer to $j_2$: $p_1-j_4$, $p_2-j_2$
+
+3. $p_3$ sends offer to $j_4$, $j_4$ rejects: $p_1-j_4$, $p_2-j_2$
+
+4. $p_4$ sends offer to $j_2$, $j_2$ unpairs with $p_2$: $p_1-j_4$, $p_4-j_2$
+
+5. $p_2$ sends offer to $j_3$: $p_1-j_4$, $p_4-j_2$, $p_2-j_3$
+
+6. $p_3$ sends offer to $j_2$, $j_2$ rejects: $p_1-j_4$, $p_4-j_2$, $p_2-j_3$
+
+7. $p_3$ sends offer to $j_3$, $j_3$ unpairs with $p_2$: $p_1-j_4$, $p_4-j_2$, $p_3-j_3$
+
+8. $p_2$ sends offer to $j_1$: $p_1-j_4$, $p_4-j_2$, $p_3-j_3$, $p_2-j_1$ Stable!
+
+Final Matching: $p_1-j_4$, $p_4-j_2$, $p_3-j_3$, $p_2-j_1$
 
 \newpage
 
-\begin{Problem}
-	
-\end{Problem}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw3-4}
+\end{figure}
 
 \textbf{Solution.}
+
+\textbf{Main Idea:} First sort the tasks by its deadlines $d(t)$. Create an array $p(t)$ such that for each task $t$, $p(t)$ returns the largest index of the compatible tasks $t'$ with $t'<t$. Suppose the maximum possible total value for the first $i$ sorted tasks is $V(i)$, then
+\[
+\begin{cases}
+	V[i] = \max\{V[i-1], v_i + V[p(i)]\} \\
+	V[0] = 0
+\end{cases}
+\]
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{TaskScheduling}{TaskScheduling}
+	\TaskScheduling{$T$}{
+		
+		Sort the tasks by its deadlines $d(t)$
+		
+		\For{$i = 1$ to $n$}{
+			
+			$p[i] \gets$ largest index of the (sorted) compatible tasks $i'$ with $i'<i$. // Do binary search for previous deadlines $d(t_{i'})$ and compare with the current releasing time $r(t_i)$
+			
+		}
+		
+		$V[0] \gets 0$
+		
+		\For{$i = 1$ to $n$}{
+		
+			$V[i] \gets \max\{V[i-1], v_i + V[p(i)]\}$
+		
+		}
+		
+	}
+	
+	\Return{$V[n]$}
+	
+	\caption{Task Scheduling}
+\end{algorithm}
+
+\textbf{Time complexity:}
+
+\(\bullet\) Sorting the tasks -> $O(n\log n)$
+
+\(\bullet\) Comstruct $p[i]$ -> each value requires $O(\log n)$ time using binary search -> $n\times O(\log n) = O(n\log n)$
+
+\(\bullet\) Calculating $V[i]$ -> $O(n)$
+
+Altogether, the algorithm requires a time complexity of $O(n\log n)$
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{hw3-5}
+\end{figure}
+
+\textbf{Solution.}
+
+First Attempt: Simply do the DFS for each grid in four directions
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{$A[1\cdots n][1\cdots n]$}
+	\KwOut{length, indices}
+	\SetKwFunction{DFS}{DFS}
+	\DFS{$i,j$,prev,path[]}{
+		
+		\If{$i<0$ or $j<0$ or $i>=n$ or $j>=n$ or $A[i][j]<$prev}{
+			\Return{0,[]}
+		}
+		
+		left, leftPath[] = \DFS($i,j-1,A[i][j],$leftPath)
+		
+		leftPath.append($A[i][j]$)
+		
+		right, rightPath[] = \DFS($i,j+1,A[i][j],$rightPath)
+		
+		rightPath.append($A[i][j]$)
+		
+		top, topPath[] = \DFS($i-1,j,A[i][j],$topPath)
+		
+		topPath.append($A[i][j]$)
+		
+		bottom, bottomPath[] = \DFS($i+1,j,A[i][j],$bottomPath)
+		
+		bottomPath.append($A[i][j]$)
+		
+		\Return{$\max{\text{left,right,top,bottom}}+1$,Corresponding\_Path[]}
+		
+		\underline{First Call:}
+		
+		Max = 0, MaxPath[] = null
+		
+		\ForEach{Grid}{
+			curMax, curMaxPath[] = \DFS{Grid.x,Grid.y,-1,[]}
+			\If{curMax > Max}{
+				Max = curMax\\
+				MaxPath = curMaxPath
+			}
+		}
+	}
+
+	\Return{curMax, curMaxPath}
+	
+	\caption{DFS for Grid Paths}
+\end{algorithm}
+
+However, this algorithm has a time complexity of $~O(n^2\cdot 4^{n^2})$, too large!
+
+\newpage
+
+Second Attempt: The previous attempt may recall the DFS algorithm on the same grid for multiple times. All we need to do is creating an array to store the calculated results to avoid recalculation.
+\begin{algorithm}
+	\SetAlgoLined
+	\KwIn{$A[1\cdots n][1\cdots n]$}
+	\KwOut{length, indices}
+	\SetKwFunction{DFS}{DFS}
+	Memory = [][][] // For each grid, reserve an array to store the longest increasing result starting at such grid
+	\DFS{$i,j$,prev,path[]}{
+		
+		\If{Memory[i][j] != null}{
+			\Return{len(Memory[i][j]),Memory[i][j]}
+		}
+		
+		\If{$i<0$ or $j<0$ or $i>=n$ or $j>=n$ or $A[i][j]<$prev}{
+			\Return{0,[]}
+		}
+		
+		left, leftPath[] = \DFS($i,j-1,A[i][j],$leftPath)
+		
+		leftPath.append($A[i][j]$)
+		
+		right, rightPath[] = \DFS($i,j+1,A[i][j],$rightPath)
+		
+		rightPath.append($A[i][j]$)
+		
+		top, topPath[] = \DFS($i-1,j,A[i][j],$topPath)
+		
+		topPath.append($A[i][j]$)
+		
+		bottom, bottomPath[] = \DFS($i+1,j,A[i][j],$bottomPath)
+		
+		bottomPath.append($A[i][j]$)
+		
+		Get the longest path $P[]$ among the four candidates
+		
+		$Memory[i][j] \gets P$
+		
+		\Return{$\max{\text{left,right,top,bottom}}+1$,Corresponding\_Path[]}
+		
+		\underline{First Call:}
+		
+		Max = 0, MaxPath[] = null
+		
+		\ForEach{Grid}{
+			curMax, curMaxPath[] = \DFS{Grid.x,Grid.y,-1,[]}
+			\If{curMax > Max}{
+				
+				Max = curMax
+				
+				MaxPath = curMaxPath
+				
+			}
+		}
+	}
+	
+	\Return{curMax, curMaxPath}
+	
+	\caption{DFS for Grid Paths}
+\end{algorithm}
+
+\textbf{Time Complexity:} DFS for each grid is called at most once, as later calls would directly return the value stored in $Memory[][][]$. All the other functions calls requires a constant time. Thus, the time complexity is $O(n^2)$.
 
 \newpage
 
