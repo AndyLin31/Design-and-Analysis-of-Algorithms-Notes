@@ -85,6 +85,8 @@
 \renewcommand\lstlistingname{Algorithm}
 \renewcommand\lstlistlistingname{Algorithms}
 \def\lstlistingautorefname{Alg.}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
 
 %%%%%%%%%%%%%%% Page Setup %%%%%%%%%%%%%%%
 
@@ -369,9 +371,9 @@ Running Time: Depends on the random generation, could be faster than the inserti
 
 \subsection{Worst-Case Analysis}
 
-The algorithm’s worst case running time is $O(f(n)) \implies $ On all inputs of (large) size $n$, the running time of the algorithm is $\leq c \cdot f(n)$.
+The algorithm's worst case running time is $O(f(n)) \implies $ On all inputs of (large) size $n$, the running time of the algorithm is $\leq c \cdot f(n)$.
 
-The algorithm’s worst case running time is $\Omega (f(n)) \implies $ There exists at least one input of (large) size $n$ for which the running time of the algorithm is  $\geq c \cdot f(n)$.
+The algorithm's worst case running time is $\Omega (f(n)) \implies $ There exists at least one input of (large) size $n$ for which the running time of the algorithm is  $\geq c \cdot f(n)$.
 
 Thus, Insertion sort runs in $\Theta (n^2)$ time.
 
@@ -1959,6 +1961,19 @@ $\bullet$ Suppose the graph is not bi-partite. i.e. for each of the $2n$ person,
 
 \subsection{1D Dynamic Programming}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{2D Dynamic Programming}
 
 \subsection{Dynamic Programming over Intervals}
@@ -1982,11 +1997,750 @@ $\bullet$ Suppose the graph is not bi-partite. i.e. for each of the $2n$ person,
 
 
 
+\newpage
+
 \section{Graph Algorithms}
 
-\subsection{Breadth \& Depth First Search}
+\subsection{Graph Introduction}
 
-\subsection{Shortest Paths}
+\subsubsection{Finding Euler Path}
+
+\textbf{Graph} $G = (V, E)$
+
+\textbf{Assumption:} In most cases we assume simple graphs, i.e. no self-loops and no parallel edges. (at most one or two edges between any two vertices in undirected or directed graph)
+
+$\bullet$ \textbf{Undirected Graph:} $\sum_{v\in V} \deg(v) = 2E$
+
+$\bullet$ \textbf{Directed Graph:} $\sum_{v\in V} \deg^{out}(v) = \deg^{in}(v) = E$
+
+\textbf{Theorem:} A (multi)graph has such a path (known as an Euler path) iff it contains exactly 0 or 2 vertices with an odd degree.
+
+\textbf{Hierholzer's Algorithm:} Find an Euler path in $O(E)$ time.
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{FindPath}{FindPath}
+	
+	$u \gets$ any odd-degree vertex
+
+	\If{$u$ does not exist}{
+
+		$u \gets$ any vertex
+
+	}
+
+	\FindPath{u}
+
+	\While{there are still edges not yet taken}{
+
+		$u \gets$ any previously seen vertex that is endpoint of an unused edge
+
+		$p\gets$\FindPath{u}
+
+		insert $p$ into the existing path at $u$
+
+	}
+
+	\vspace*{1em}
+
+	\FindPath{u}:{
+
+		\While{$u$ has an edge not yet taken}{
+
+		take that edge
+
+		$u \gets v$
+
+		}
+
+	}
+	
+	\caption{Hierholzer's Algorithm}
+\end{algorithm}
+
+\subsubsection{Graph Representation}
+
+\textbf{Adjacency List:} For each vertex $v$, store a list of all vertices $u$ such that $(v, u) \in E$.
+
+$\bullet$ \textbf{Space Complexity:} $O(V+E)$
+
+$\bullet$ More commonly used, as most graphs are sparse
+
+\textbf{Adjacency Matrix:} $A[i][j] = 1$ if $(i, j) \in E$, $A[i][j] = 0$ otherwise.
+
+$\bullet$ \textbf{Space Complexity:} $O(V^2)$
+
+\subsubsection{Path and Connectivity}
+
+\textbf{Path:} A sequence of vertices $v_1, v_2, \cdots, v_k$ such that $(v_i, v_{i+1}) \in E$ for all $i = 1, \cdots, k-1$. The length of such path is $k-1$.
+
+\textbf{Simple Path:} A path with no repeated vertices.
+
+\textbf{Undirected Connected Graph:} A graph is connected if there is a path between every pair of vertices.
+
+\textbf{Directed Strongly Connected Graph:} A directed graph is strongly connected if there is a path from $u$ to $v$ and a path from $v$ to $u$ for every pair of vertices $u$ and $v$.
+
+\textbf{Directed Weakly Connected Graph:} A directed graph is weakly connected if replacing all of its directed edges with undirected edges produces a connected (undirected) graph.
+
+\textbf{Cycle:} A cycle is a path $v_1, v_2, \cdots, v_k$ such that $(v_1, v_k) \in E$.
+
+\textbf{Distance:} The distance between two vertices $u$ and $v$ is the length of the shortest path between them.
+
+\subsubsection{Trees}
+
+\textbf{Tree:} A tree is an undirected graph that is connected and acyclic (not containing a cycle).
+
+\textbf{Rooted Tree:} A rooted tree is a tree in which one vertex has been designated the root. Every edge is directed away from the root.
+
+\textbf{Leaf:} A leaf is a vertex of degree 1.
+
+\textbf{Parent, Child, Ancestor, Descendant:} If $(u, v) \in E$, then $u$ is the parent of $v$ and $v$ is the child of $u$. $u$ is an ancestor of $v$ and $v$ is a descendant of $u$.
+
+\textbf{Forest:} A forest is an undirected graph that is acyclic.
+
+\begin{theorem}
+	For any undirected graph $G = (V, E)$, the following statements are equivalent:
+	
+	$\bullet$ $G$ is a tree
+	
+	$\bullet$ $G$ is connected and $|E| = |V| - 1$
+	
+	$\bullet$ $G$ is acyclic and $|E| = |V| - 1$
+	
+	$\bullet$ Any two vertices of $G$ are connected by a unique simple path
+	
+	$\bullet$ $G$ is connected and removing any edge disconnects $G$
+	
+	$\bullet$ $G$ is acyclic and adding any edge creates a cycle
+	
+	$\bullet$ $G$ is connected and has no cycles
+	
+	$\bullet$ $G$ is acyclic and has $|E| = |V| - 1$
+	
+	$\bullet$ $G$ is connected, and for any vertices $u$ and $v$, there is a unique simple path from $u$ to $v$
+\end{theorem}
+
+\subsection{Breadth First Search}
+
+\textbf{Idea:} Explore outward from $s$ in all possible directions, adding nodes one "layer" at a time.
+
+\begin{wrapfigure}{r}{0.3\textwidth}
+	\centering
+	\includegraphics[width=0.3\textwidth]{img7-1}
+\end{wrapfigure}
+
+\textbf{Property:} $L_{i+1}$ contains all nodes that do not belong to an earlier layer, and that have an edge to a node in $L_i$.
+
+\textbf{Theorem:}  For each $i$, $L_i$ consists of all nodes at distance exactly $i$ from $s$. There is a path from $s$ to $t$ iff $t$ appears in some layer, where the distance from $u$ to $v$ is the number of edges on the shortest path from $u$ to $v$.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{BFS}{BFS}
+	\SetKwFunction{Enqueue}{Enqueue}
+	\BFS{G, s}{
+
+		\ForEach(// Initialize the discoverys state, distance and parent except the starting point){$u \in V-\{s\}$}{
+
+			$u.color \gets WHITE$
+
+			$u.d \gets \infty$
+
+			$u.p \gets NIL$
+
+		}
+
+		$s.color \gets GRAY$
+
+		$s.d \gets 0$
+
+		Initialize an empty queue $Q$ // Temporary storage of the vertices to be processed
+
+		\Enqueue{$Q, s$}{
+
+			\While{$Q \neq \varnothing$}{
+
+				$u \gets$ Dequeue($Q$) // Dequeue the first element in the queue (FIFO), reduce the required space for the queue
+
+				\ForEach{$v \in G.Adj[u]$}{
+
+					\If{$v.color = WHITE$}{
+
+						$v.color \gets GRAY$ // Discovered but unprocessed
+
+						$v.d \gets u.d + 1$
+
+						$v.p \gets u$
+
+						\Enqueue{$Q, v$}
+
+					}
+
+				}
+
+				$u.color \gets BLACK$ // Processed
+
+			}
+
+		}
+
+	}
+	
+	\caption{BFS Algorithm}
+\end{algorithm}
+
+\textbf{Time Complexity:} $\sum_u (1+\deg{u}) = = \Theta(E)$ if the graph is connected.
+
+To transfer through non-connected graphs, simply check if any vertex is still white after the first BFS, if so, run BFS again starting from that vertex.
+
+\subsubsection{Strong Connectivity in Directed Graphs}
+
+\textbf{Def.} Node $u$ and $v$ are mutually reachable if there is a path from $u$ to $v$ and a path from $v$ to $u$.
+
+\textbf{Def.} A graph is strongly connected if every pair of nodes is mutually reachable.
+
+\textbf{Observation 1:} A graph $G$ is strongly connected if there exists such a vertex $v$ that every other vertex forms a mutually-reachable pair with $v$. In this case, every other vertex has the similar property.
+
+\textbf{Observation 2:} A graph $G$ is strongly connected if and only if every vertex $v$ is mutually reachable with every other vertex.
+
+\textbf{Idea to check strong connectivity in directed graphs:} Run BFS from $v$, then \textbf{REVERSE ALL THE EDGES} and run BFS again from $v$. If all vertices are visited in both BFS, then the graph is strongly connected.
+
+\textbf{Note:} Given the adjacency list, one can convert $G$ to its reverse $G^T$ within $O(V+E)$ time.
+
+\textbf{Time Complexity:} $O(E)$
+
+\subsubsection{Strongly Connected Components in $O(VE)$ Time}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{StronglyConnectedComponents}{StronglyConnectedComponents}
+	\StronglyConnectedComponents{G, s}{
+
+		create $G^T$ // Reverse all the edges
+
+		\While{$G$ has unvisited vertices}{
+
+			Run BFS on $G$ starting from an unvisited vertex $v$
+
+			Run BFS on $G^T$ starting from an unvisited vertex $v$
+
+			$C \gets$ all visited vertices in both BFSs
+
+			output $C$ as a strongly connected component
+
+			remove $C$ and all its edges from $G$ and $G^T$
+
+		}
+
+	}
+	
+	\caption{Strongly Connected Components}
+\end{algorithm}
+
+\textbf{Time Complexity:} $O(VE)$
+
+\subsubsection{Strongly Connected Components in $O(V+E)$ Time}
+
+Let $C$ and $C'$ be distinct strongly connected components in directed graph $G=(V, E)$.
+
+\textbf{Observation 1:} Let $u, v \in C$ and $u', v' \in C'$. If there is an edge from $u$ to $u'$, then there is no edge from $v'$ to $v$.
+
+\textbf{Observation 2:} Let $d(U) = \min{u.d: u \in U}$ being the discovery time and $f(U) = \max{u.f: u \in U}$ being the finish time of a set of vertices $U$. Suppose $u \in C$ and $v \in C'$ with $(u, v) in E$. Then $f(C) > f(C')$. (i.e. $C$ is finished later than $C'$)
+
+\textbf{Observation 3:} Suppoose $f(C) > f(C')$, then $E^T$ contains no edge from $C$ to $C'$.
+
+\textbf{Key Point:} In general, when the depth-first search of 
+$G^T$ in line 3 visits any strongly connected component, any edges out of that component must be to components that the search has already visited. Each depth-first tree, therefore, corresponds to exactly one strongly connected component.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{StronglyConnectedComponents}{StronglyConnectedComponents}
+	\StronglyConnectedComponents{G, s}{
+
+		call $DFS(G)$ to compute finish times $u.f$ for each vertex $u$
+
+		create $G^T$ // Reverse all the edges
+
+		call $DFS(G^T)$, but in the main loop of DFS, consider the vertices in order of decreasing $u.f$ (as computed in line 1)
+
+		output the vertices of each tree in the depth-first forest formed in line 3 as a separate strongly connected component
+
+	}
+
+	\caption{Strongly Connected Components Modified}
+\end{algorithm}
+
+\textbf{Note:} See next subsection for the DFS algorithm.
+
+\textbf{Time Complexity:} $\Theta(V+E)$
+
+\newpage
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Check Bipartite Graph}
+
+	\textbf{Problem:} Given an undirected graph $G = (V, E)$, check if $G$ is bipartite.
+
+	\textbf{Idea:} Run BFS from any vertex. Use $d[v]$ to store the distance from the root to any other vertex $v$. Set $S$ to be the set of all vertices with even $d[v]$, and $V-S$ to be the set of all vertices with odd $d[v]$.
+
+	$\bullet$ $G$ is partite if and only if all edges $(u, v)$ in the graph satisfy that the parity of $d[u]$ and $d[v]$ are different.
+
+	$\bullet$ Alternatively, whether $G$ is bipartite is equivalent to whether $G$ does not contain any odd cycle. To check so, simply do BFS to find if there is any edge, both of whose endpoints are in the same layer.
+	
+\end{formal}
+
+\subsection{Depth First Search}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{DFS}{DFS}
+	\SetKwFunction{DFSVisit}{DFSVisit}
+	\DFS{G}{
+
+		\ForEach{$u \in V$}{
+
+			$u.color \gets WHITE$
+
+			$u.p \gets NIL$
+
+		}
+
+		$time \gets 0$
+
+		\ForEach{$u \in V$}{
+
+			\If{$u.color = WHITE$}{
+
+				\DFSVisit{$u$}
+
+			}
+
+		}
+
+	}
+
+	\vspace*{1em}
+	
+	\DFSVisit{$u$}{
+
+		$time \gets time + 1$
+
+		$u.d \gets time$
+
+		$u.color \gets GRAY$
+
+		\ForEach{$v \in G.Adj[u]$}{
+
+			\If{$v.color = WHITE$}{
+
+				$v.p \gets u$
+
+				\DFSVisit{$v$}
+
+			}
+
+		}
+
+		$u.color \gets BLACK$
+
+		$time \gets time + 1$
+
+		$u.f \gets time$
+
+	}
+	
+	\caption{DFS Algorithm}
+
+\end{algorithm}
+
+\subsubsection{Cycle Detection in Undirected Graphs}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Cycle Detection}
+
+	\textbf{Problem:} Given an undirected graph $G = (V, E)$, check if $G$ contains a cycle.
+
+	\textbf{Idea:} A tree (connected and acyclic) has $|E| = |V| - 1$. If $G$ contains a cycle, then $|E| > |V| - 1$. Therefore, we can check if $|E| > |V| - 1$ after running DFS.
+
+	\textbf{Time Complexity:} $\Theta(V+E)$
+
+\end{formal}
+
+\begin{formal}{Brown}{brownshade}
+	
+	\textbf{Example: Cycle Detection}
+
+	\textbf{Problem:} Given an undirected graph $G = (V, E)$, check if $G$ contains a cycle. If so, find a cycle.
+
+	\textbf{Def.} All edges, after running BFS or DFS, can be classified into three categories: tree edges, back edges and forward/cross edges.
+
+	\textbf{Tree edges:} Traversed by BFS/DFS.
+
+	\textbf{Back edges:} Connecting a node with one of its ancestors in the BFS/DFS tree which is not a tree edge.
+
+	\textbf{Forward/Cross edges:} Connecting two nodes with no ancestor/descendant relationship in the BFS/DFS tree.
+
+\end{formal}
+
+\begin{theorem}
+	In a BFS on an undirected graph, there are no back edges.
+\end{theorem}
+
+\begin{theorem}
+	In a DFS on an undirected graph, there are no cross edges.
+\end{theorem}
+
+\begin{formal}{Brown}{brownshade}
+
+	\textbf{Idea:} Run DFS. If there is a back edge, then there is a cycle. To find a cycle, simply find the path from the current vertex to the ancestor vertex. If no, then there is no cycle.
+
+	\textbf{Time Complexity:} $\Theta(V)$
+
+\end{formal}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{CycleDetection}{CycleDetection}
+	\SetKwFunction{DFSVisit}{DFSVisit}
+	\CycleDetection{G}{
+
+		\ForEach{$u \in V$}{
+
+			$u.color \gets WHITE$
+
+			$u.p \gets NIL$
+
+		}
+
+		$time \gets 0$
+
+		\ForEach{$u \in V$}{
+
+			\If{$u.color = WHITE$}{
+
+				\DFSVisit{$u$}
+
+			}
+
+		}
+
+		\Return{"No Cycle"}
+
+	}
+
+	\vspace*{1em}
+	
+	\DFSVisit{$u$}{
+
+		$u.color \gets GRAY$
+
+		\ForEach{$v \in G.Adj[u]$}{
+
+			\If{$v.color = WHITE$}{
+
+				$v.p \gets u$
+
+				\DFSVisit{$v$}
+
+			}
+
+			\ElseIf(// back edge (u, v)){$v \neq u.p$}{
+
+				output "Cycle detected"
+
+				\While{$u \neq v$}{
+				
+					output $u$
+
+					$u \gets u.p$
+
+				}
+
+				output $v$
+
+				\Return
+
+			}
+
+		$u.color \gets BLACK$
+
+		}
+
+	}
+	
+	\caption{DFS Algorithm for Cycle Detection}
+
+\end{algorithm}
+
+\newpage
+\subsection{Topological Sort}
+
+\textbf{Def.} Directed acyclic graph (DAG) is a directed graph with no cycles.
+
+\textbf{Def.} A topological sort of a DAG $G = (V, E)$ is a linear ordering of all its vertices such that if $G$ contains an edge $(u, v)$, then $u$ appears before $v$ in the ordering.
+
+\textbf{Idea:} A DAG must contain at least one vertex with no incoming edges. Output a vertex $u$ with in-degree zero in current graph. Remove this vertex and all its outgoing edges. Repeat until all vertices are removed.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{TopologicalSort}{TopologicalSort}
+	\TopologicalSort{G}{
+
+		Initialize an empty queue $Q$
+		
+		\ForEach{$u \in V$}{
+
+			\If{in-degree($u$) = 0}{
+
+				\Enqueue{$Q, u$} // Enqueue all vertices with in-degree 0
+
+			}
+		
+		}
+
+		\While{$Q \neq \varnothing$}{
+
+			$u \gets$ Dequeue($Q$)
+
+			output $u$
+
+			\ForEach{$v \in G.Adj[u]$}{
+
+				in-degree($v$) $\gets$ in-degree($v$) - 1 // remove $u$'s outgoing edges
+
+				\If{in-degree($v$) = 0}{
+
+					\Enqueue{$Q, v$}
+
+				}
+
+			}
+
+		}
+
+	}
+	
+	\caption{Topological Sort}
+
+\end{algorithm}
+
+For each vertex, we need to check all its outgoing edges $\sum_{v\in V} out-degree(v) = E$.
+
+\textbf{Time complexity:} $O(V+E)$
+
+\textbf{Alternative Implementation Using DFS:} Apply DFS from a node with in-degree 0. Output the vertices in reverse order of their finish times.
+
+\newpage
+\subsection{Minimum Spanning Tree}
+
+\subsubsection{Definition}
+
+\textbf{Spanning Tree:} Given a connected undirected graph $G = (V, E)$, a spanning tree of $G$ is a subgraph that is a tree and connects all the vertices together.
+
+\textbf{Minimum Spanning Tree:} A minimum spanning tree (MST) or minimum weight spanning tree $S$ is a subset of the edges $T \subseteq E$ of a connected, edge-weighted (un)directed graph that connects all the vertices together, with the minimum possible total edge weight $\sum w(e)$. 
+
+\subsubsection{Prim's Algorithm}
+
+\textbf{Idea:}
+
+$\bullet$ Initialize the set $S$ to have any single vertex $s$. Initialize $T$ to be empty.
+
+$\bullet$ Add minimum cost edge $e = (u, v)$ with $u \in S$ and $v \notin S$ to $T$.
+
+$\bullet$ Add $v$ to $S$.
+
+$\bullet$ Repeat until $S = V$.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Prim}{Prim}
+	\Prim{G, root}{
+
+		\ForEach{$u \in V$}{
+
+			$u.key \gets \infty$
+
+			$u.p \gets NIL$
+
+			$u.color \gets WHITE$
+
+		}
+
+		$root.key \gets 0$
+
+		Initialize an empty min-priority queue $Q$ // e.g. Use min-heap to implement so that we can conduct extract-min method
+
+		\While{$Q \neq \varnothing$}{
+
+			$u \gets$ Extract-Min($Q$)
+
+			$u.color \gets BLACK$
+
+			\ForEach{$v \in G.Adj[u]$}{
+
+				\If{$v.color = WHITE$ and $w(u, v) < v.key$}{
+
+					$v.p \gets u$
+
+					$v.key \gets w(u, v)$ // Let $v.key$ specify the minimum weight of any edge connecting $v$ to a vertex already processed.
+
+					Decrease-Key($Q, v, w(u, v)$) // Changes the value in the min-priority queue (or min-heap), same as the above line. See page 17 for Decrease-Key method.
+
+				}
+
+			}
+
+		}
+
+	}
+	
+	\caption{Prim's Algorithm}
+
+\end{algorithm}
+
+\textbf{Time Complexity:} $O(E\log V)$
+
+\subsubsection{The Cut Lemma}
+
+\textbf{Assumption:} All edge weights are distinct.
+
+\begin{lemma}
+	Let $S$ be any subset of nodes, and let $e = (u, v)$ be the minimum weight edge connecting $S$ to $V-S$. Then, every minimum spanning tree must contain the edge $e$.
+\end{lemma}
+
+\subsubsection{Kruskal's Algorithm}
+
+\textbf{Idea:} Start with an empty tree $T$. Add edges in increasing order of weight (according to the cut lemma), skipping those whose addition would create a cycle.
+
+$\bullet$ To check whether the new edge forms a cycle, using DFS would cost a total time of $O(E\cdot V)$. Alternatively, we can use "union-find" data structure to check it.
+
+\newpage
+\textbf{Union-Find Data Structure:}
+
+$\bullet$ Maintain a collection of disjoint sets that support the following operations:
+
+$\bullet$ \textbf{Find-Set($u$):} Given a node $u$, find a set which contains $u$.
+
+$\bullet$ \textbf{Union($u, v$):} Given two nodes $u$ and $v$, merge the two sets containing $u$ and $v$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{img7-2}
+\end{figure}
+
+\textbf{Methods of Union-Find Data Structure:}
+
+$\bullet$ Initalization: Make-Set($x$): Set the parent to itself, and height to 0
+
+$\bullet$ Find-Set($x$): Return the root of the tree containing $x$ by calling its parent.
+
+$\bullet$ Union($x, y$): Let $a, b$ be the roots of the trees containing $x$ and $y$ with $a.height \leq b.height$. Make the shorter tree $a$ subtree of the taller tree by setting $a.p = b$.
+
+\begin{theorem}
+	The running time fo Find-Set and Union are both $O(\log n)$. Specifically, for a tree with height $h$, it contains at least $2^h$ nodes.
+\end{theorem}
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{Kruskal}{Kruskal}
+	\Kruskal{G}{
+
+		\ForEach{$u \in V$}{
+
+			Make-Set($u$)
+
+		}
+
+		sort the edges of $G$ into increasing order by its weight
+
+		\ForEach{edge $(u, v) \in E$ in the above order}{
+
+			\If{Find-Set($u$) $\neq$ Find-Set($v$)}{
+
+				output edge $u, v$
+
+				Union($u, v$)
+
+			}
+
+		}
+
+	}
+	
+	\caption{Kruskal's Algorithm}
+
+\end{algorithm}
+
+\textbf{Time Complexity:} $O(E\log E + E\log V) = O(E\log V)$
+
+\textbf{Note:} If the edges are already sorted, then the time complexity can be reduced to be closed to $O(E)$.
+
+\textbf{Remark:}
+
+$\bullet$ When the distinct-weight-assumption is removed, the only thing that needs to be changed is that, instead of choosing \textbf{the} smallest cost edge, we choose \textbf{a} smallest cost edge that does not create a cycle.
+
+$\bullet$ If the graph $G$ is an undirected connected graph with distinct edge weights. Then, there is a unique MST for $G$.
+
+\begin{formal}{Brown}{brownshade}
+
+	\textbf{Example: Bottleneck Weight of MST}
+
+	\textbf{Theorem:} Let $G = (V,E)$ be a connected undirected graph with weights on the edges. The bottleneck weight of any spanning tree $T$ of $G$ is the maximum weight of an edge in $T$. Prove that the minimum spanning tree (MST) minimizes the bottleneck weight over all spanning trees.
+
+	\textbf{Idea:} Suppose the heaviest weight $e$ with weight $w(e)$ connects two components $A$ and $B$, with $A \cup B = V$. Assume another MST $T'$ has a smaller bottleneck weight. Then, there must be an edge $e'$ in $T'$ with weight $w(e')$ that connects $A$ and $B$. Remove $e$ from $T$ and add $e'$ to $T$ forms a new spanning tree $T''$ with smaller total weight. This contradicts the assumption that $T$ is an MST.
+
+\end{formal}
+
+\begin{formal}{Brown}{brownshade}
+
+	\textbf{Example: Euclidean Traveling Salesman Problem}
+
+	\textbf{Input:} Undirected graph $G = (V, E)$ with edge cost $C(e)$ for each $e \in E$.
+
+	\textbf{Output:} A minimum-cost cycle that visits each vertex exactly once.
+
+	\textbf{Notes: Euclidean} Traveling Salesman implies that the cost is the Euclidean distance between the two vertices, which satisfies the triangle inequality: $C(u, v) \leq C(u, w) + C(w, v)$.
+
+	\textbf{Remark:} This problem is NP-hard. There is no known polynomial-time algorithm that solves it. There are two approximate solutions using MST.
+
+\end{formal}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img7-3}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img7-4}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{img7-5}
+	\end{subfigure}
+	\caption*{Euclidean Traveling Salesman Problem}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Shortest Paths}
 
@@ -2769,5 +3523,104 @@ Second Attempt: The previous attempt may recall the DFS algorithm on the same gr
 \textbf{Time Complexity:} DFS for each grid is called at most once, as later calls would directly return the value stored in $Memory[][][]$. All the other functions calls requires a constant time. Thus, the time complexity is $O(n^2)$.
 
 \newpage
+
+\section*{Homework 4}
+
+\textbf{Name: LIN, Xuanyu, SID: 20838295, Email Address: xlinbf@connect.ust.hk}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-1}
+\end{figure}
+
+\textbf{Solution.}
+
+(a) Suppose at least one vertex $v$ has degree $\geq 3$, while other vertices have degree $\geq 2$. Then, the number of edges $l$ satisfies:
+\[
+	l = \frac{1}{2} \sum_{v\in V} d(v) \geq \frac{1}{2} \times 3 + \frac{1}{2} \times (n-1) \times 2 = n + \frac{1}{2} > n
+\]
+
+Contradicts with the assumption that the graph has $n$ edges. Thus, every vertex has a degree of 2.
+
+\vspace*{1em}
+
+(b) Suppose the undirected graph $G$ with $n$ vertices has its every vertex of different degree. Notice that each vertex should have a degree between 0 and $n-1$ (a total of $n$ different values), there must be a vertex with degree 0 and a vertex with degree $n-1$. However, the vertex with degree $n-1$ must be connected to all the other vertices, which contradicts with the assumption that there exists a vertex with degree 0. Thus, there must be at least two vertices with the same degree.
+
+\vspace*{1em}
+
+(c) We begin the proof with a lemma:
+\begin{lemma}
+	For any graph $G$ with $n$ vertices, if every vertex has a degree of two, then $G$ must either be a cycle, or a union of several cycles, each with at least three vertices.
+\end{lemma}
+\begin{proof}
+	We start from an arbitrary vertex $v_1$ in the graph, tracing its two edges to the other two vertices $v_{11}\neq v_{12}$ called "ends", forming a tree. We continue to trace the two branch $v_{11}\ \&\ v_{12}$. Each new branch should either introduce a new vertex, forming a new "end" or connect to each other, forming a complete cycle. (That is, unable to connect to any vertex that already exists in the tree.) Since the number of vertices is finite, the process must terminate, forming a cycle. Thus, every vertex should be in a cycle of length $\geq 3$. In this case, the graph must either be a cycle, or a union of several cycles, each with at least three vertices.
+\end{proof}
+
+We then come to the main proof:
+\begin{proof}
+	Restate the problem in an equivalent way as follows (Invert the connection and disconnection):
+
+	In a group of 10 vertices, each one of them has a degree of 2. Prove that there exists 4 vertices such that non of them connects to the other three.
+
+	According to \textbf{Lemma}, the graph must either be a cycle, or a union of several cycles, each with at least three vertices. In the case of 10 vertices, there are at most 3 cycles. Note to the fact that if two vertices are not in the same cycle, they are unconnected.
+	
+	$\bullet$ If the graph is a single cycle. We start by naming any one of the vertex to be $v_1$, transversing the cycle to name the vertices as $v_2, v_3, ..., v_{10}$. Then, we are able to find 4 vertices such that non of them connects to the other three, i.e., $v_1, v_3, v_5, v_7$.
+	
+	$\bullet$ If the graph is a union of two cycles, then there must be either at least one cycle of length $\geq 6$ or both cycles of length 5. In the former case, we take three vertices from the cycle of length $\geq 6$ (i.e., $v_1, v_3, v_5$) and one vertex from the other cycle. In the latter case, we take two unconnected vertices from each of the two cycles. Both cases yields the result.
+
+	$\bullet$ If the graph is a union of three cycles, then there must be two cycles of length 3 and one of length 4. In this case, we take the two unconnected vertices from the cycle of length 4, and one vertex from each of the cycle of length 3, which yields the result.
+
+\end{proof}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-2}
+\end{figure}
+
+\textbf{Solution.}
+
+\textbf{Main Idea:}
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{CheckBipartiteGraph}{CheckBipartiteGraph}
+	\CheckBipartiteGraph{$G,n$}{
+		
+	}
+
+	\caption{DFS Check Bipartite Graph}
+\end{algorithm}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-3}
+\end{figure}
+
+\textbf{Solution.}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-4(1)}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-4(2)}
+\end{figure}
+
+\textbf{Solution.}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-5}
+\end{figure}
+
+\textbf{Solution.}
 
 \end{document}
