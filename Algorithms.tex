@@ -2187,7 +2187,7 @@ $\bullet$ \textbf{Space Complexity:} $O(V^2)$
 	\caption{BFS Algorithm}
 \end{algorithm}
 
-\textbf{Time Complexity:} $\sum_u (1+\deg{u}) = = \Theta(E)$ if the graph is connected.
+\textbf{Time Complexity:} $\sum_u (1+\deg{u}) = \Theta(E)$ if the graph is connected.
 
 To transfer through non-connected graphs, simply check if any vertex is still white after the first BFS, if so, run BFS again starting from that vertex.
 
@@ -2243,7 +2243,7 @@ Let $C$ and $C'$ be distinct strongly connected components in directed graph $G=
 
 \textbf{Observation 1:} Let $u, v \in C$ and $u', v' \in C'$. If there is an edge from $u$ to $u'$, then there is no edge from $v'$ to $v$.
 
-\textbf{Observation 2:} Let $d(U) = \min{u.d: u \in U}$ being the discovery time and $f(U) = \max{u.f: u \in U}$ being the finish time of a set of vertices $U$. Suppose $u \in C$ and $v \in C'$ with $(u, v) in E$. Then $f(C) > f(C')$. (i.e. $C$ is finished later than $C'$)
+\textbf{Observation 2:} Let $d(U) = \min{u.d: u \in U}$ being the discovery time and $f(U) = \max{u.f: u \in U}$ being the finish time of a set of vertices $U$. Suppose $u \in C$ and $v \in C'$ with $(u, v) \in E$. Then $f(C) > f(C')$. (i.e. $C$ is finished later than $C'$)
 
 \textbf{Observation 3:} Suppoose $f(C) > f(C')$, then $E^T$ contains no edge from $C$ to $C'$.
 
@@ -2259,7 +2259,7 @@ $G^T$ in line 3 visits any strongly connected component, any edges out of that c
 
 		create $G^T$ // Reverse all the edges
 
-		call $DFS(G^T)$, but in the main loop of DFS, consider the vertices in order of decreasing $u.f$ (as computed in line 1)
+		call $DFS(G^T)$, but consider the vertices in decreasing order of $u.f$ in the main loop of DFS (computed in line 1)
 
 		output the vertices of each tree in the depth-first forest formed in line 3 as a separate strongly connected component
 
@@ -2394,7 +2394,7 @@ $G^T$ in line 3 visits any strongly connected component, any edges out of that c
 
 	\textbf{Idea:} Run DFS. If there is a back edge, then there is a cycle. To find a cycle, simply find the path from the current vertex to the ancestor vertex. If no, then there is no cycle.
 
-	\textbf{Time Complexity:} $\Theta(V)$
+	\noindent \textbf{Time Complexity:} $\Theta(V)$
 
 \end{formal}
 
@@ -2411,8 +2411,6 @@ $G^T$ in line 3 visits any strongly connected component, any edges out of that c
 			$u.p \gets NIL$
 
 		}
-
-		$time \gets 0$
 
 		\ForEach{$u \in V$}{
 
@@ -2695,7 +2693,7 @@ $\bullet$ If the graph $G$ is an undirected connected graph with distinct edge w
 
 	\textbf{Example: Euclidean Traveling Salesman Problem}
 
-	\textbf{Input:} Undirected graph $G = (V, E)$ with edge cost $C(e)$ for each $e \in E$.
+	\textbf{Input:} Undirected fully-connected graph $G = (V, E)$ with edge cost $C(e)$ for each $e \in E$.
 
 	\textbf{Output:} A minimum-cost cycle that visits each vertex exactly once.
 
@@ -3444,6 +3442,7 @@ First Attempt: Simply do the DFS for each grid in four directions
 		
 		\ForEach{Grid}{
 			curMax, curMaxPath[] = \DFS{Grid.x,Grid.y,-1,[]}
+
 			\If{curMax > Max}{
 				Max = curMax\\
 				MaxPath = curMaxPath
@@ -3505,6 +3504,7 @@ Second Attempt: The previous attempt may recall the DFS algorithm on the same gr
 		
 		\ForEach{Grid}{
 			curMax, curMaxPath[] = \DFS{Grid.x,Grid.y,-1,[]}
+
 			\If{curMax > Max}{
 				
 				Max = curMax
@@ -3550,7 +3550,7 @@ Contradicts with the assumption that the graph has $n$ edges. Thus, every vertex
 
 (c) We begin the proof with a lemma:
 \begin{lemma}
-	For any graph $G$ with $n$ vertices, if every vertex has a degree of two, then $G$ must either be a cycle, or a union of several cycles, each with at least three vertices.
+	For any graph $G$ with $n \geq 3$ vertices, if every vertex has a degree of two, then $G$ must either be a cycle, or a union of several cycles, each with at least three vertices.
 \end{lemma}
 \begin{proof}
 	We start from an arbitrary vertex $v_1$ in the graph, tracing its two edges to the other two vertices $v_{11}\neq v_{12}$ called "ends", forming a tree. We continue to trace the two branch $v_{11}\ \&\ v_{12}$. Each new branch should either introduce a new vertex, forming a new "end" or connect to each other, forming a complete cycle. (That is, unable to connect to any vertex that already exists in the tree.) Since the number of vertices is finite, the process must terminate, forming a cycle. Thus, every vertex should be in a cycle of length $\geq 3$. In this case, the graph must either be a cycle, or a union of several cycles, each with at least three vertices.
@@ -3582,15 +3582,91 @@ We then come to the main proof:
 \textbf{Solution.}
 
 \textbf{Main Idea:}
+
+$\bullet$ When trasversing the bipartite graph using DFS, the current vertex jumps between the two sets of vertices.
+
+$\bullet$ Since each vertex must connect to the other set of vertices, we can assign the vertices in two values 0 and 1. Every edge must connect two vertices with different values.
+
+$\bullet$ We assign the values during DFS, and check whether there exists an edge connecting two vertices with the same value. If so, the graph is not bipartite. Otherwise, the graph is bipartite.
+
+$\bullet$ Whether the graph is connected or not doesn't affect the result, as we have ensured that every vertex is visited during the DFS.
+
+\textbf{Remark of the Following Algorithm:} In the following algorithm, we use $u.color$ to store whether a vertex is processed or not (WHITE, GRAY, BLACK). We use another variable $u.value$ to store the assigned values of the vertex (0 or 1) as described above.
+
 \begin{algorithm}
 	\SetAlgoLined
 	\SetKwFunction{CheckBipartiteGraph}{CheckBipartiteGraph}
-	\CheckBipartiteGraph{$G,n$}{
-		
+	\SetKwFunction{DFSVisit}{DFSVisit}
+	
+	isBipartite = true
+
+	\CheckBipartiteGraph{G}{
+
+		\ForEach{$u \in V$}{
+
+			$u.color \gets WHITE$
+
+			$u.p \gets NIL$
+
+			$u.value \gets 0.5$
+
+		}
+
+		\ForEach{$u \in V$}{
+
+			\If{$u.color = WHITE$}{
+
+				$u.value \gets 0$
+
+				\DFSVisit{$u$}
+
+			}
+
+		}
+
+		\Return{isBipartite}
+
 	}
 
+	\vspace*{1em}
+	
+	\DFSVisit{$u$}{
+
+		$u.color \gets GRAY$
+
+		\ForEach{$v \in G.Adj[u]$}{
+
+			\If{$v.color = WHITE$}{
+
+				$v.p \gets u$
+
+				$v.value \gets 1 - u.value$
+
+				\DFSVisit{$v$}
+
+			}
+
+			\ElseIf{$v.color = GRAY$}{
+
+				\If{$v.value = u.value$}{
+
+					isBipartite = false
+
+				}
+
+			}
+
+		}
+
+		$u.color \gets BLACK$
+
+	}
+	
 	\caption{DFS Check Bipartite Graph}
+
 \end{algorithm}
+
+\textbf{Time Complexity:} This algorithm is identical to the DFS algorithm, which requires $O(n+m)$ time.
 
 \newpage
 
@@ -3600,6 +3676,27 @@ We then come to the main proof:
 \end{figure}
 
 \textbf{Solution.}
+
+\textbf{Idea:} Note to the symmetry of "Maximizing the lowerbound weight" and "Minimizing the upperbound weight", we can reassign the edges with negative weights accordingly and construct a MST for the whole graph to solve the problem.
+
+$\bullet$ We claim that the path between any two vertices in a generated MST is one of the "Minimum lowerbound path" between them.
+
+\begin{proof}
+	We prove the claim by contradiction.
+	
+	We consider the minimum lowerbound weight path between the two vertices $u$ and $v$. Suppose the generated MST $M = (V, E_{MST})$ contains a unique path ${e_i}$ from $u$ to $v$, while the actual "Minimum lowerbound path" between them is ${e'_i} \neq {e_i}$ with $\sum wt(e'_i) < \sum wt(e_i)$.
+
+	Consider the union of edges $E_{MST} \cup {e'_i}$, which absolutely form some cycles. We claim that all cycles are formed by the edges in ${e_i} \cup {e'_i}$.
+
+	% This is a fake proof
+	$\bullet$ If there exists a cycle $C$ that contains an edge $\{e \notin {e_i}\} \cup {e'_i}$, then there also exists a cycle formed by the edges in $\{e \notin {e_i}\} \cup {e_i} = E_{MST}$, as both ${e_i}$ and ${e'_i}$ has the same starting and ending point. This contradicts with the assumption that $M$ is a MST.
+
+	Thus, we are able to remove only the edges in ${e_i}$ from $E_{MST} \cup {e'_i}$ to form a new MST $M'$. However, $\sum wt(M') = \sum wt(M) - \sum wt({e'_i}) + \sum wt({e'_i}) = \sum wt(M) < \sum wt(M)$. Contradiction!
+\end{proof}
+
+Thus, our algorithm could start from generated $n$ MSTs rooted at each vertex using Prim's algorithm, and then report the "Minimum lowerbound path" between any two vertices using the claim above.
+
+\textbf{Time Complexity:} Prim's algorithm for all vertices requires $O(EV\log V)$ time. The remaining part requires $O(V^2)$ time. Thus, the total time complexity is $O(EV\log V)$.
 
 \newpage
 
@@ -3614,6 +3711,56 @@ We then come to the main proof:
 
 \textbf{Solution.}
 
+(a)
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-4-ans(1)}
+\end{figure}
+
+\newpage
+(b)
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-4-ans(2)}
+\end{figure}
+
+\newpage
+\textbf{Appendix:} The following is the code for the algorithm in (b):
+
+\lstset{language=Python}
+\begin{lstlisting}[tabsize=4]
+def floyd_warshall(graph):
+n = len(graph)
+dist = graph
+
+for k in range(n):
+	for i in range(n):
+		for j in range(n):
+			dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+	print("k =", k+1)
+	for row in dist:
+		print(row)
+	print("--------------------")
+
+return dist
+
+graph = [
+[0, float('inf'), 10, float('inf'), 2, float('inf'), 5],
+[float('inf'), 0, float('inf'), 10, float('inf'),\
+float('inf'), float('inf')],
+[float('inf'), float('inf'), 0, 20, float('inf'), 8, float('inf')],
+[float('inf'), float('inf'), 6, 0, float('inf'),\
+float('inf'), float('inf')],
+[float('inf'), float('inf'), float('inf'), 50, 0, float('inf'), 2],
+[float('inf'), float('inf'), float('inf'),\
+float('inf'), float('inf'), 0, float('inf')],
+[float('inf'), 2, float('inf'), 20, float('inf'), 3, 0]
+
+]
+
+result = floyd_warshall(graph)
+\end{lstlisting}
+
 \newpage
 
 \begin{figure}[h]
@@ -3621,6 +3768,15 @@ We then come to the main proof:
 	\includegraphics[width=0.6\textwidth]{hw4-5}
 \end{figure}
 
+\newpage
 \textbf{Solution.}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-5-ans(1)}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{hw4-5-ans(2)}
+\end{figure}
 
 \end{document}
