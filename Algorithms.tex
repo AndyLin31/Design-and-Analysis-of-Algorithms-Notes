@@ -2722,33 +2722,91 @@ $\bullet$ If the graph $G$ is an undirected connected graph with distinct edge w
 	\caption*{Euclidean Traveling Salesman Problem}
 \end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \subsection{Shortest Paths}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img7-6}
+	\caption*{An Overview of Shortest Path Algorithms}
+\end{figure}
+\begin{formal}{Brown}{brownshade}
+
+	\textbf{Example: Shortest Path between Two Vertices}
+
+	\textbf{Problem:} Given a directed graph $G = (V, E)$ with non-negative edge weights $w(e)$ for each $e \in E$, a source and a destination vertex $s,t \in V$, find the shortest path from $s$ to $t$.
+
+	\textbf{Idea:} Run BFS. The shortest path from $s$ to $v$ is the path from $s$ to $v$ with the fewest edges.
+
+	\textbf{Def:} $\delta(u, v)$ represents the length of the shortest path from $u$ to $v$.
+
+\end{formal}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{img7-7}
+\end{figure}
+\begin{lemma}
+	Let $P=(s, \cdots, u, \cdots, v)$ be a shortest $s-t$ path, then the subpaths $P_1 = (s, \cdots, u)$ and $P_2 = (u, \cdots, v)$ must be shortest $s-u$ and $u-t$ paths respectively.
+\end{lemma}
+
+\subsubsection{Bellman Ford Algorithm}
+
+\textbf{Idea:} Relax all edges $|V|-1$ times. The shortest path from $s$ to $v$ is the path from $s$ to $v$ with the fewest edges.
+
+\begin{algorithm}
+	\SetAlgoLined
+	\SetKwFunction{BellmanFord}{BellmanFord}
+	\BellmanFord{G, s}{
+
+		\ForEach{$u \in V$}{
+
+			$u.d \gets \infty$
+
+			$u.p \gets NIL$
+
+		}
+
+		$s.d \gets 0$
+
+		\For{$i \gets 1$ \KwTo $|V|-1$}{
+
+			\ForEach{$(u, v) \in E$}{
+
+				Relax($u, v, w$)
+
+			}
+
+		}
+
+		\ForEach{$(u, v) \in E$}{
+
+			\If{$v.d > u.d + w(u, v)$}{
+
+				\Return{"Negative Cycle"}
+
+			}
+
+		}
+
+	}
+	
+	\caption{Bellman Ford Algorithm}
+
+\end{algorithm}
+
+
+
+
 
 \subsection{Maximum Flow and Bipartite Matchings}
 
+\begin{comment}
 \section{AVL Trees}
 
 \section{Basic String Matching}
 
 \section{Hashing}
+\end{comment}
 
 \newpage
 
